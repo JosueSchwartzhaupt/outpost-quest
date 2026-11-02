@@ -11,7 +11,7 @@ public class PowerUp extends Entity implements Movable {
     private PowerUpType type;
 
     public PowerUp(Game game, double x, double y, PowerUpType type) {
-        super(game, x, y, 14, 14,type.getAnimationType());
+        super(game, x, y, 14, 14, type.getAnimationType());
         this.type = type;
     }
 

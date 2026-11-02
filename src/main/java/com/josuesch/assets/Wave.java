@@ -2,8 +2,6 @@ package com.josuesch.assets;
 
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.enemies.EnemyType;
-
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -18,8 +16,9 @@ public enum Wave {
 
     Wave(int waveTime, List<Enemy>... enemies) {
         this.waveTime = waveTime;
-        this.enemies = Arrays.stream(enemies)
-                .flatMap(Collection::stream)
-                .collect(Collectors.groupingBy(Enemy::getType));
+        this.enemies =
+                Arrays.stream(enemies)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.groupingBy(Enemy::getType));
     }
 }

@@ -8,8 +8,6 @@ import com.josuesch.entities.Player;
 import com.josuesch.graphics.Spritesheet;
 import com.josuesch.graphics.UI;
 import com.josuesch.world.World;
-
-import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -57,7 +56,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        player = new Player(this, 100, 180, 32, 8);
+        player = new Player(this, 100, 180);
         entities.add(player);
         world = new World(this, "/map.png");
 
@@ -92,7 +91,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public void restart() {
         entities.clear();
         enemies.clear();
-        player = new Player(this, 100, 180, 32, 8);
+        player = new Player(this, 100, 180);
         entities.add(player);
         world = new World(this, "/map.png");
         gameOver = false;
@@ -197,6 +196,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(true);
         }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            player.setShootRight(true);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            player.setShootLeft(true);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            player.setShootUp(true);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            player.setShootDown(true);
+        }
     }
 
     @Override
@@ -213,10 +224,26 @@ public class Game extends Canvas implements Runnable, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(false);
         }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            player.setShootRight(false);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            player.setShootLeft(false);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            player.setShootUp(false);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            player.setShootDown(false);
+        }
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public List<Entity> getEntities() {

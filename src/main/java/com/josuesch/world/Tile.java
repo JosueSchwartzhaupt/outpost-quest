@@ -2,7 +2,7 @@ package com.josuesch.world;
 
 import com.josuesch.Game;
 import com.josuesch.assets.Placeble;
-
+import com.josuesch.graphics.GameGraphics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -24,7 +24,7 @@ public abstract class Tile implements Placeble {
     }
 
     public void render(Graphics g) {
-        g.drawImage(sprite, x, y, null);
+        GameGraphics.drawImage(g, sprite, x, y);
     }
 
     @Override

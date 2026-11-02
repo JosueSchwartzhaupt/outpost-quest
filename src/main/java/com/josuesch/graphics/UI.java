@@ -2,7 +2,6 @@ package com.josuesch.graphics;
 
 import com.josuesch.Game;
 import com.josuesch.entities.Player;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

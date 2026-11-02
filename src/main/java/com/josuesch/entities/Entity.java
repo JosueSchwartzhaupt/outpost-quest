@@ -1,12 +1,10 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
-import com.josuesch.assets.animation.AnimationData;
-import com.josuesch.assets.animation.AnimationRegistry;
+import com.josuesch.assets.Placeble;
 import com.josuesch.assets.animation.AnimationType;
 import com.josuesch.assets.animation.Animator;
-import com.josuesch.assets.Placeble;
-
+import com.josuesch.graphics.GameGraphics;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -23,7 +21,11 @@ public abstract class Entity implements Placeble {
 
     protected final Animator animator;
 
-    public Entity(Game game, double x, double y, int width, int height, AnimationType animationType) {
+    protected int xSpriteOffset;
+    protected int ySpriteOffset;
+
+    public Entity(
+            Game game, double x, double y, int width, int height, AnimationType animationType) {
         this.game = game;
         this.x = x;
         this.y = y;
@@ -41,11 +43,12 @@ public abstract class Entity implements Placeble {
     public void render(Graphics g) {
         BufferedImage sprite = animator.getCurrentSprite();
         if (sprite != null) {
-            g.drawImage(sprite, (int) this.getX(), (int) this.getY(), null);
+            GameGraphics.drawImage(
+                    g, sprite, this.getX() - xSpriteOffset, this.getY() - ySpriteOffset);
             return;
         }
         g.setColor(new Color(255, 0, 0));
-        g.fillRect((int) Math.round(x), (int) Math.round(y), width, height);
+        GameGraphics.fillRect(g, x, y, width, height);
     }
 
     @Override

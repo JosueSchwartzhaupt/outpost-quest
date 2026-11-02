@@ -4,14 +4,16 @@ import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 import com.josuesch.assets.animation.AnimationType;
+import java.util.Optional;
 
 public class Player extends Entity implements Movable {
-    public static final double NATURAL_SPEED = 3;
+    public static final double NATURAL_SPEED = 2;
     public static final int MAX_HEALTH = 3;
     public static final int MAX_SIZE = Game.WIDTH - 64;
     public static final int MAX_SPEED = 10;
 
     private boolean right, up, left, down;
+    private boolean shootRight, shootUp, shootLeft, shootDown;
 
     private double speed;
     private double dx;
@@ -21,12 +23,16 @@ public class Player extends Entity implements Movable {
 
     private int points;
 
-    public Player(Game game, double x, double y, int width, int height) {
-        super(game, x, y, width, height, AnimationType.PLAYER);
+    private int shootingDrawback = 20;
+    private int shootingIdx = shootingDrawback;
+
+    public Player(Game game, double x, double y) {
+        super(game, x, y, 10, 16, AnimationType.PLAYER);
         speed = NATURAL_SPEED;
+        xSpriteOffset = 3;
     }
 
-    public void move() {
+    public Optional<String> move() {
         int horizontal = (right ? 1 : 0) - (left ? 1 : 0);
         int vertical = (down ? 1 : 0) - (up ? 1 : 0);
         double mag = Math.sqrt(Math.pow(horizontal, 2) + Math.pow(vertical, 2));
@@ -45,11 +51,70 @@ public class Player extends Entity implements Movable {
 
         x += dx;
         y += dy;
+
+        if (dy < 0) return Optional.of("UP");
+        else if (dy > 0) return Optional.of("DOWN");
+        else if (dx < 0) return Optional.of("LEFT");
+        else if (dx > 0) return Optional.of("RIGHT");
+        return Optional.empty();
+    }
+
+    public Optional<String> attack() {
+        if (shootingIdx < shootingDrawback) {
+            shootingIdx++;
+        }
+        if (!(shootUp || shootRight || shootLeft || shootDown)) {
+            return Optional.empty();
+        }
+
+        int horizontal = (shootRight ? 1 : 0) - (shootLeft ? 1 : 0);
+        int vertical = (shootDown ? 1 : 0) - (shootUp ? 1 : 0);
+        double mag = Math.sqrt(Math.pow(horizontal, 2) + Math.pow(vertical, 2));
+        if (mag == 0) {
+            mag = 1;
+        }
+
+        double arrowDx = (horizontal / mag);
+        double arrowDy = (vertical / mag);
+
+        if (arrowDx == 0 && arrowDy == 0) return Optional.empty();
+
+        if (shootingIdx >= shootingDrawback) {
+            shootingIdx = 0;
+            game.getEntities()
+                    .add(
+                            new Arrow(
+                                    game,
+                                    x + width / 2,
+                                    y + height / 2,
+                                    Math.toDegrees(Math.atan2(arrowDy, arrowDx))));
+        }
+
+        String direction = null;
+
+        if (arrowDy < 0) direction = "UP_SHOOT";
+        else if (arrowDy > 0) direction = "DOWN_SHOOT";
+        else if (arrowDx < 0) direction = "LEFT_SHOOT";
+        else if (arrowDx > 0) direction = "RIGHT_SHOOT";
+
+        if (isMoving() && direction == null) {
+            return Optional.empty();
+        }
+
+        String state = !isMoving() ? "IDLE_" + direction : direction;
+
+        return Optional.of(state);
     }
 
     @Override
     public void tick() {
-        move();
+        String animationStatus = move().orElse("IDLE");
+
+        animationStatus = attack().orElse(animationStatus);
+
+        animator.setAnimation(animationStatus);
+
+        animator.update();
     }
 
     public void setDown(boolean down) {
@@ -66,6 +131,26 @@ public class Player extends Entity implements Movable {
 
     public void setRight(boolean right) {
         this.right = right;
+    }
+
+    public void setShootDown(boolean shootDown) {
+        this.shootDown = shootDown;
+    }
+
+    public void setShootLeft(boolean shootLeft) {
+        this.shootLeft = shootLeft;
+    }
+
+    public void setShootUp(boolean shootUp) {
+        this.shootUp = shootUp;
+    }
+
+    public void setShootRight(boolean shootRight) {
+        this.shootRight = shootRight;
+    }
+
+    private boolean isMoving() {
+        return dx != 0 || dy != 0;
     }
 
     @Override
@@ -126,9 +211,5 @@ public class Player extends Entity implements Movable {
             x -= increase / 2.0;
             width += increase;
         }
-    }
-
-    public void increaseSpeed(double additionalSpeed) {
-        this.speed = Math.min(speed + additionalSpeed, MAX_SPEED);
     }
 }

@@ -2,13 +2,12 @@ package com.josuesch.world;
 
 import com.josuesch.Game;
 import com.josuesch.assets.Placeble;
-
-import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 public class World {
 

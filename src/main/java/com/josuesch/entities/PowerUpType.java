@@ -2,12 +2,10 @@ package com.josuesch.entities;
 
 import com.josuesch.Game;
 import com.josuesch.assets.animation.AnimationType;
-
-import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
 
 public enum PowerUpType {
-;
+    ;
     private final AnimationType animationType;
     private final BiConsumer<Game, Player> effect;
 

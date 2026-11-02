@@ -1,10 +1,10 @@
 package com.josuesch.graphics;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 public class Spritesheet {
     private BufferedImage spritesheet;
@@ -24,7 +24,8 @@ public class Spritesheet {
     public List<BufferedImage> getSprites(int startTileX, int tileY, int tileSize, int count) {
         List<BufferedImage> sprites = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            sprites.add(getSprite((startTileX + i) * tileSize, tileY * tileSize, tileSize, tileSize));
+            sprites.add(
+                    getSprite((startTileX + i) * tileSize, tileY * tileSize, tileSize, tileSize));
         }
         return sprites;
     }
