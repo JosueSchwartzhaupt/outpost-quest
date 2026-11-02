@@ -1,5 +1,7 @@
 package com.josuesch.assets.animation;
 
+import com.josuesch.graphics.GameGraphics;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -11,6 +13,8 @@ public class Animator {
     private int currentFrame = 0;
     private int timer = 0;
     private int speed = 10; // Quantos ticks do jogo até mudar de frame
+    private boolean temporaryRedMask;
+    private int redMaskFrames = 0, maxRedMaskFrames = 10;
 
     public Animator(AnimationType animationType) {
 
@@ -26,7 +30,20 @@ public class Animator {
         }
     }
 
+    public void applyTemporaryRedMask() {
+        temporaryRedMask = true;
+    }
+
     public void update() {
+        if(temporaryRedMask){
+            redMaskFrames++;
+            if(redMaskFrames>=maxRedMaskFrames)
+            {
+                temporaryRedMask = false;
+                redMaskFrames=0;
+            }
+        }
+
         List<BufferedImage> frames = animationData.getFrames(currentAnimState);
         if (frames == null || frames.isEmpty()) return;
 
@@ -40,6 +57,8 @@ public class Animator {
     public BufferedImage getCurrentSprite() {
         List<BufferedImage> frames = animationData.getFrames(currentAnimState);
         if (frames == null || frames.isEmpty()) return null;
-        return frames.get(currentFrame);
+        var sprite = frames.get(currentFrame);
+        if(temporaryRedMask)sprite = GameGraphics.applyRedMask(sprite);
+        return sprite;
     }
 }

@@ -1,5 +1,7 @@
 package com.josuesch.graphics;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -29,5 +31,23 @@ public class GameGraphics {
         g2.drawImage(sprite, -sprite.getWidth() / 2, -sprite.getHeight() / 2, null);
 
         g2.dispose();
+    }
+
+    public static BufferedImage applyRedMask(BufferedImage originalSprite) {
+        BufferedImage newSprite = new BufferedImage(
+                originalSprite.getWidth(), originalSprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = newSprite.createGraphics();
+        g2d.drawImage(originalSprite, 0, 0, null);
+
+        // Configura para misturar as cores preservando o corte do sprite
+        g2d.setComposite(AlphaComposite.SrcAtop);
+
+        // Altere o último número (0.5f) para ajustar a intensidade do vermelho (0.0f a 1.0f)
+        g2d.setColor(new Color(1.0f, 0.0f, 0.0f, 0.5f));
+        g2d.fillRect(0, 0, newSprite.getWidth(), newSprite.getHeight());
+
+        g2d.dispose();
+        return newSprite;
     }
 }

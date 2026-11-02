@@ -74,6 +74,7 @@ public class Enemy extends Entity implements Movable {
     public void damage(int damage) {
         this.health = Math.max(health - damage, 0);
         game.getPlayer().addPoints(100);
+        animator.applyTemporaryRedMask();
     }
 
     public int getHealth() {
