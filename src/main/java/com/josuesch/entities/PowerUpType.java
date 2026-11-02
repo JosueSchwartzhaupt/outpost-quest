@@ -1,17 +1,18 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
+import com.josuesch.assets.animation.AnimationType;
 
 import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
 
 public enum PowerUpType {
 ;
-    private final BufferedImage sprite;
+    private final AnimationType animationType;
     private final BiConsumer<Game, Player> effect;
 
-    PowerUpType(BufferedImage sprite, BiConsumer<Game, Player> effect) {
-        this.sprite = sprite;
+    PowerUpType(AnimationType animationType, BiConsumer<Game, Player> effect) {
+        this.animationType = animationType;
         this.effect = effect;
     }
 
@@ -19,8 +20,8 @@ public enum PowerUpType {
         effect.accept(game, player);
     }
 
-    public BufferedImage getSprite() {
-        return sprite;
+    public AnimationType getAnimationType() {
+        return animationType;
     }
 
     public static PowerUpType getRandomPowerUp() {

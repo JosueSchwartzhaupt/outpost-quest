@@ -3,6 +3,8 @@ package com.josuesch.graphics;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Spritesheet {
     private BufferedImage spritesheet;
@@ -17,5 +19,13 @@ public class Spritesheet {
 
     public BufferedImage getSprite(int x, int y, int width, int height) {
         return spritesheet.getSubimage(x, y, width, height);
+    }
+
+    public List<BufferedImage> getSprites(int startTileX, int tileY, int tileSize, int count) {
+        List<BufferedImage> sprites = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            sprites.add(getSprite((startTileX + i) * tileSize, tileY * tileSize, tileSize, tileSize));
+        }
+        return sprites;
     }
 }

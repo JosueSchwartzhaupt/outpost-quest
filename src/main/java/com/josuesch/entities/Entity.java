@@ -1,6 +1,10 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
+import com.josuesch.assets.animation.AnimationData;
+import com.josuesch.assets.animation.AnimationRegistry;
+import com.josuesch.assets.animation.AnimationType;
+import com.josuesch.assets.animation.Animator;
 import com.josuesch.assets.Placeble;
 
 import java.awt.Color;
@@ -15,16 +19,17 @@ public abstract class Entity implements Placeble {
     protected int width;
     protected int height;
 
-    protected BufferedImage sprite;
-
     protected final Game game;
 
-    public Entity(Game game, double x, double y, int width, int height) {
+    protected final Animator animator;
+
+    public Entity(Game game, double x, double y, int width, int height, AnimationType animationType) {
         this.game = game;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.animator = new Animator(animationType);
     }
 
     public abstract void tick();
@@ -34,6 +39,7 @@ public abstract class Entity implements Placeble {
     }
 
     public void render(Graphics g) {
+        BufferedImage sprite = animator.getCurrentSprite();
         if (sprite != null) {
             g.drawImage(sprite, (int) this.getX(), (int) this.getY(), null);
             return;

@@ -3,6 +3,7 @@ package com.josuesch.entities;
 import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
+import com.josuesch.assets.animation.AnimationType;
 
 public class Player extends Entity implements Movable {
     public static final double NATURAL_SPEED = 3;
@@ -21,7 +22,7 @@ public class Player extends Entity implements Movable {
     private int points;
 
     public Player(Game game, double x, double y, int width, int height) {
-        super(game, x, y, width, height);
+        super(game, x, y, width, height, AnimationType.PLAYER);
         speed = NATURAL_SPEED;
     }
 

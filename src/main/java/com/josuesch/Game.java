@@ -1,6 +1,7 @@
 package com.josuesch;
 
 import com.josuesch.assets.Placeble;
+import com.josuesch.assets.animation.AnimationRegistry;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
@@ -52,6 +53,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
+        AnimationRegistry.init(SPRITESHEET);
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
@@ -183,21 +185,33 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 started = true;
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+        if (e.getKeyCode() == KeyEvent.VK_D) {
             player.setRight(true);
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+        if (e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(true);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            player.setUp(true);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            player.setDown(true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+        if (e.getKeyCode() == KeyEvent.VK_D) {
             player.setRight(false);
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+        if (e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(false);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            player.setUp(false);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            player.setDown(false);
         }
     }
 
