@@ -1,7 +1,6 @@
 package com.josuesch.assets;
 
 import com.josuesch.Game;
-import com.josuesch.assets.animation.WaveType;
 import com.josuesch.entities.enemies.EnemyFactory;
 import com.josuesch.entities.enemies.EnemyType;
 import com.josuesch.world.SpawnerTile;
@@ -53,7 +52,7 @@ public class Wave {
     private Optional<SpawnerTile> getRandomSpawnLocation() {
         var spawnerTiles = game.getWorld().getSpawnerTiles();
         if (spawnerTiles.isEmpty()) return Optional.empty();
-        return Optional.of(spawnerTiles.remove(Game.RANDOM.nextInt(spawnerTiles.size())));
+        return Optional.of(spawnerTiles.get(Game.RANDOM.nextInt(spawnerTiles.size())));
     }
 
     private int getNextTickSpawnMark() {

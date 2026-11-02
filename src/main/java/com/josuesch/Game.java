@@ -3,7 +3,7 @@ package com.josuesch;
 import com.josuesch.assets.Placeble;
 import com.josuesch.assets.Wave;
 import com.josuesch.assets.animation.AnimationRegistry;
-import com.josuesch.assets.animation.WaveType;
+import com.josuesch.assets.WaveType;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
@@ -264,6 +264,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public List<Placeble> getCollidables() {
         collidablesBuffer.clear();
         collidablesBuffer.addAll(world.getSolidTiles());
+        collidablesBuffer.addAll(entities);
+        return collidablesBuffer;
+    }
+
+    public List<Placeble> getPlayerCollidables() {
+        collidablesBuffer.clear();
+        collidablesBuffer.addAll(world.getSolidTiles());
+        collidablesBuffer.addAll(world.getSpawnerTiles());
         collidablesBuffer.addAll(entities);
         return collidablesBuffer;
     }

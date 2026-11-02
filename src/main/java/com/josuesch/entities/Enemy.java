@@ -17,6 +17,9 @@ public class Enemy extends Entity implements Movable {
 
     private int health = MAX_HEALTH;
 
+    private double speed=1;
+    private double angle;
+
     public Enemy(
             Game game,
             EnemyType type,
@@ -33,14 +36,18 @@ public class Enemy extends Entity implements Movable {
         this.attackBehavior = attackBehavior;
     }
 
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
     @Override
     public double getAngle() {
-        return 0;
+        return angle;
     }
 
     @Override
     public double getSpeed() {
-        return 0;
+        return speed;
     }
 
     @Override
@@ -66,6 +73,7 @@ public class Enemy extends Entity implements Movable {
 
     public void damage(int damage) {
         this.health = Math.max(health - damage, 0);
+        game.getPlayer().addPoints(100);
     }
 
     public int getHealth() {

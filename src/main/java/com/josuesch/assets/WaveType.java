@@ -1,4 +1,4 @@
-package com.josuesch.assets.animation;
+package com.josuesch.assets;
 
 import static com.josuesch.entities.enemies.EnemyType.FIREMAN;
 import static com.josuesch.entities.enemies.EnemyType.MUDLIN;
@@ -11,7 +11,7 @@ public enum WaveType {
     FIRST(
             120 * 60,
             Map.of(
-                    FIREMAN, 2,
+                    FIREMAN, 15,
                     MUDLIN, 1)),
     SECOND(
             90,

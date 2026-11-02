@@ -43,7 +43,6 @@ public class World {
                     if (pixel == 0xFFA5A5A5) {
                         SpawnerTile spawnerTile = new SpawnerTile(x, y, Tile.TILE_SPAWNER);
                         tiles[xx + (yy * WIDTH)] = spawnerTile;
-                        solidTiles.add(spawnerTile);
                         spawnerTiles.add(spawnerTile);
                         continue;
                     }

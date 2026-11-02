@@ -22,8 +22,11 @@ public class AnimationRegistry {
 
         // --- MUDLIN ---
         AnimationData mudlin = new AnimationData();
-        mudlin.addAnimation("IDLE", spritesheet.getSprites(0, 7, 16, 1));
+        mudlin.addAnimation("IDLE",  spritesheet.getSprites(0, 10, 16, 1));
+        mudlin.addAnimation("UP", spritesheet.getSprites(0, 10, 16, 5));
         mudlin.addAnimation("DOWN", spritesheet.getSprites(0, 10, 16, 5));
+        mudlin.addAnimation("RIGHT", spritesheet.getSprites(0, 10, 16, 5));
+        mudlin.addAnimation("LEFT", spritesheet.getSprites(0, 10, 16, 5));
         mudlin.addAnimation("HIDE", spritesheet.getSprites(0, 11, 16, 5));
         putInCache(AnimationType.MUDLIN, mudlin);
 
