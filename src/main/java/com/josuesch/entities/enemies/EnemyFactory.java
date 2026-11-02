@@ -21,7 +21,7 @@ public class EnemyFactory {
 
         AttackBehavior attack =
                 switch (type) {
-                    default -> new MeleeAttack();
+                    default -> new MeleeAttack(60);
                 };
 
         Enemy enemy = new Enemy(game, type, movement, attack, x, y, 16, 16, animationType);

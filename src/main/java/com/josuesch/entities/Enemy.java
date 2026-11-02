@@ -51,6 +51,8 @@ public class Enemy extends Entity implements Movable {
 
         animator.setAnimation(animationStatus);
 
+        if (health <= 0) this.dispawn();
+
         animator.update();
     }
 

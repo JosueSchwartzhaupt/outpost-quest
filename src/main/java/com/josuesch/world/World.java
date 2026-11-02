@@ -76,6 +76,7 @@ public class World {
     public List<Placeble> getSolidTiles() {
         return solidTiles;
     }
+
     public List<SpawnerTile> getSpawnerTiles() {
         return spawnerTiles;
     }

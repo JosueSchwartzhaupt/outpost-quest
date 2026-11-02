@@ -5,6 +5,7 @@ import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 import com.josuesch.assets.animation.AnimationType;
 import com.josuesch.graphics.GameGraphics;
+import com.josuesch.world.SpawnerTile;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -43,14 +44,21 @@ public class Arrow extends Entity implements Movable {
             final var hit =
                     game.getCollidables().stream()
                             .filter(c -> HitboxComparator.isColiding(this, c))
-                            .filter(c -> !(c instanceof Player) && !(c instanceof Arrow))
+                            .filter(
+                                    c ->
+                                            !(c instanceof Player)
+                                                    && !(c instanceof Arrow)
+                                                    && !(c instanceof SpawnerTile))
                             .findFirst();
             hit.ifPresent(
                     e -> {
                         if (e instanceof Enemy) {
                             ((Enemy) e).damage(1);
+                            this.dispawn();
                         }
-                        this.dispawn();
+                        if (e.isColidable()) {
+                            this.dispawn();
+                        }
                     });
         }
     }

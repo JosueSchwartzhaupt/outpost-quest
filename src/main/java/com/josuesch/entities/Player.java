@@ -192,11 +192,6 @@ public class Player extends Entity implements Movable {
         return health == 0;
     }
 
-    @Override
-    public boolean isColidable() {
-        return true;
-    }
-
     public void expandPaddle(int size) {
         int increase = Math.min(MAX_SIZE - width, size);
         double gameCenter = Game.WIDTH / 2.0;

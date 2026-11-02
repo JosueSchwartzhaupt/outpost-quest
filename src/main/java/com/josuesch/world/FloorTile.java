@@ -1,7 +1,6 @@
 package com.josuesch.world;
 
 import com.josuesch.graphics.GameGraphics;
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -10,7 +9,7 @@ public class FloorTile extends Tile {
 
     public FloorTile(int x, int y, BufferedImage sprite, int rotation) {
         super(x, y, sprite);
-        this.rotation = Math.toRadians(rotation*90);
+        this.rotation = Math.toRadians(rotation * 90);
     }
 
     public void render(Graphics g) {

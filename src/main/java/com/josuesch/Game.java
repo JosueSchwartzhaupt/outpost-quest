@@ -1,11 +1,12 @@
 package com.josuesch;
 
 import com.josuesch.assets.Placeble;
+import com.josuesch.assets.Wave;
 import com.josuesch.assets.animation.AnimationRegistry;
+import com.josuesch.assets.animation.WaveType;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
-import com.josuesch.entities.enemies.EnemyFactory;
 import com.josuesch.graphics.Spritesheet;
 import com.josuesch.graphics.UI;
 import com.josuesch.world.World;
@@ -27,8 +28,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private Thread thread;
     private boolean isRunning = false;
 
-    public static final int WIDTH = 320;
-    public static final int HEIGHT = 320;
+    public static final int WIDTH = 304;
+    public static final int HEIGHT = 304;
     public static final int SCALE = 3;
     public static final Spritesheet SPRITESHEET = new Spritesheet("/spritesheet.png");
     public static final Random RANDOM = new Random();
@@ -41,6 +42,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private final List<Enemy> enemies = new ArrayList<>();
     private World world;
     private UI ui;
+    private Wave wave;
 
     private boolean started = false;
     private boolean gameOver = false;
@@ -63,7 +65,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         ui = new UI(this);
 
-        addEnemy(EnemyFactory);
+        wave = new Wave(this, WaveType.FIRST);
     }
 
     private void initFrame() {
@@ -97,6 +99,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         player = new Player(this, 100, 180);
         entities.add(player);
         world = new World(this, "/map.png");
+        wave = new Wave(this, WaveType.FIRST);
         gameOver = false;
     }
 
@@ -128,6 +131,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private void tick() {
         if (hasStarted()) {
+            wave.update();
             for (int i = 0; i < entities.size(); i++) {
                 entities.get(i).tick();
             }
