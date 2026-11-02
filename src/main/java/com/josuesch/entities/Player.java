@@ -1,0 +1,133 @@
+package com.josuesch.entities;
+
+import com.josuesch.Game;
+import com.josuesch.assets.HitboxComparator;
+import com.josuesch.assets.Movable;
+
+public class Player extends Entity implements Movable {
+    public static final double NATURAL_SPEED = 3;
+    public static final int MAX_HEALTH = 3;
+    public static final int MAX_SIZE = Game.WIDTH - 64;
+    public static final int MAX_SPEED = 10;
+
+    private boolean right, up, left, down;
+
+    private double speed;
+    private double dx;
+    private double dy;
+
+    private int health = MAX_HEALTH;
+
+    private int points;
+
+    public Player(Game game, double x, double y, int width, int height) {
+        super(game, x, y, width, height);
+        speed = NATURAL_SPEED;
+    }
+
+    public void move() {
+        int horizontal = (right ? 1 : 0) - (left ? 1 : 0);
+        int vertical = (down ? 1 : 0) - (up ? 1 : 0);
+        double mag = Math.sqrt(Math.pow(horizontal, 2) + Math.pow(vertical, 2));
+        if (mag == 0) {
+            mag = 1;
+        }
+
+        dx = speed * (horizontal / mag);
+        dy = speed * (vertical / mag);
+
+        double relativeSpeed = speed;
+        var collision = HitboxComparator.processCollision(this, game.getCollidables());
+        if (collision.isPresent()) relativeSpeed = collision.get().maxSpeed();
+        dx = relativeSpeed * (horizontal / mag);
+        dy = relativeSpeed * (vertical / mag);
+
+        x += dx;
+        y += dy;
+    }
+
+    @Override
+    public void tick() {
+        move();
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    @Override
+    public double getAngle() {
+        double response = Math.atan2(dy, dx);
+        return response < 0 ? (response + (2 * Math.PI)) : response;
+    }
+
+    @Override
+    public double getSpeed() {
+        return speed;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public void removePoints(int points) {
+        this.points -= points;
+    }
+
+    public void heal(int healPoints) {
+        this.health = Math.min(health + healPoints, MAX_HEALTH);
+    }
+
+    public void damage(int damage) {
+        this.health = Math.max(health - damage, 0);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isDead() {
+        return health == 0;
+    }
+
+    @Override
+    public boolean isColidable() {
+        return true;
+    }
+
+    public void expandPaddle(int size) {
+        int increase = Math.min(MAX_SIZE - width, size);
+        double gameCenter = Game.WIDTH / 2.0;
+        double paddleCenter = x + width / 2.0;
+
+        if (paddleCenter < gameCenter) {
+            width += increase;
+        } else if (paddleCenter > gameCenter) {
+            x -= increase;
+            width += increase;
+        } else {
+            x -= increase / 2.0;
+            width += increase;
+        }
+    }
+
+    public void increaseSpeed(double additionalSpeed) {
+        this.speed = Math.min(speed + additionalSpeed, MAX_SPEED);
+    }
+}
