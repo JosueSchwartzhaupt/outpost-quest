@@ -83,4 +83,8 @@ public abstract class Entity implements Placeble {
     public boolean isColidable() {
         return false;
     }
+
+    public Game getGame() {
+        return game;
+    }
 }

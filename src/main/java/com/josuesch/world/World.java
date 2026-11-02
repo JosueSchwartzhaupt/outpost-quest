@@ -13,6 +13,7 @@ public class World {
 
     private Tile[] tiles;
     private final List<Placeble> solidTiles = new ArrayList<>();
+    private final List<SpawnerTile> spawnerTiles = new ArrayList<>();
     public int WIDTH, HEIGHT;
 
     private final Game game;
@@ -37,6 +38,13 @@ public class World {
                         WallTile wall = new WallTile(x, y, Tile.TILE_WALL);
                         tiles[xx + (yy * WIDTH)] = wall;
                         solidTiles.add(wall);
+                        continue;
+                    }
+                    if (pixel == 0xFFA5A5A5) {
+                        SpawnerTile spawnerTile = new SpawnerTile(x, y, Tile.TILE_SPAWNER);
+                        tiles[xx + (yy * WIDTH)] = spawnerTile;
+                        solidTiles.add(spawnerTile);
+                        spawnerTiles.add(spawnerTile);
                         continue;
                     }
 
@@ -67,5 +75,8 @@ public class World {
 
     public List<Placeble> getSolidTiles() {
         return solidTiles;
+    }
+    public List<SpawnerTile> getSpawnerTiles() {
+        return spawnerTiles;
     }
 }

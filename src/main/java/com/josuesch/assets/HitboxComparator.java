@@ -122,4 +122,13 @@ public class HitboxComparator {
                 .map(p -> getCollision(m, p))
                 .min(Comparator.naturalOrder());
     }
+
+    public static double getDistance(Placeble p1, Placeble p2) {
+        double p1X = p1.getX() + p1.getWidth() / 2.0;
+        double p1Y = p1.getY() + p1.getHeight() / 2.0;
+        double p2X = p2.getX() + p2.getWidth() / 2.0;
+        double p2Y = p2.getY() + p2.getHeight() / 2.0;
+
+        return Math.sqrt(Math.pow(p1X - p2X,2) + Math.pow(p1Y - p2Y,2));
+    }
 }

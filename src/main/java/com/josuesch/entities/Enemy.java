@@ -44,7 +44,15 @@ public class Enemy extends Entity implements Movable {
     }
 
     @Override
-    public void tick() {}
+    public void tick() {
+        String animationStatus = movementBehavior.move(this).orElse("IDLE");
+
+        animationStatus = attackBehavior.attack(this).orElse(animationStatus);
+
+        animator.setAnimation(animationStatus);
+
+        animator.update();
+    }
 
     public EnemyType getType() {
         return type;

@@ -5,6 +5,7 @@ import com.josuesch.assets.animation.AnimationRegistry;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
+import com.josuesch.entities.enemies.EnemyFactory;
 import com.josuesch.graphics.Spritesheet;
 import com.josuesch.graphics.UI;
 import com.josuesch.world.World;
@@ -26,8 +27,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private Thread thread;
     private boolean isRunning = false;
 
-    public static final int WIDTH = 272;
-    public static final int HEIGHT = 336;
+    public static final int WIDTH = 320;
+    public static final int HEIGHT = 320;
     public static final int SCALE = 3;
     public static final Spritesheet SPRITESHEET = new Spritesheet("/spritesheet.png");
     public static final Random RANDOM = new Random();
@@ -61,6 +62,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
         world = new World(this, "/map.png");
 
         ui = new UI(this);
+
+        addEnemy(EnemyFactory);
     }
 
     private void initFrame() {
@@ -261,7 +264,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         return collidablesBuffer;
     }
 
-    public void addBall(Enemy enemy) {
+    public void addEnemy(Enemy enemy) {
         entities.add(enemy);
         enemies.add(enemy);
     }

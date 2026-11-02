@@ -1,24 +1,80 @@
 package com.josuesch.assets;
 
-import com.josuesch.entities.Enemy;
+import com.josuesch.Game;
+import com.josuesch.assets.animation.WaveType;
+import com.josuesch.entities.enemies.EnemyFactory;
 import com.josuesch.entities.enemies.EnemyType;
-import java.util.Arrays;
-import java.util.Collection;
+import com.josuesch.world.SpawnerTile;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-public enum Wave {
-    ;
+public class Wave {
 
-    private final int waveTime;
-    private final Map<EnemyType, List<Enemy>> enemies;
+    private final WaveType type;
+    private final List<EnemyType> remainingEnemies;
+    private int waveTimer;
+    private Game game;
 
-    Wave(int waveTime, List<Enemy>... enemies) {
-        this.waveTime = waveTime;
-        this.enemies =
-                Arrays.stream(enemies)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.groupingBy(Enemy::getType));
+    private int nextTickSpawnMark;
+
+    public Wave(Game game,WaveType type) {
+        this.game = game;
+        this.type = type;
+        this.waveTimer = type.getWaveTime();
+        this.remainingEnemies = new ArrayList<>();
+
+        type.getEnemyConfig().forEach((enemyType, count) -> {
+            for (int i = 0; i < count; i++) {
+                this.remainingEnemies.add(enemyType);
+            }
+        });
+
+        nextTickSpawnMark = getNextTickSpawnMark();
     }
+
+    public void update(){
+        if(isActive()){
+            waveTimer--;
+            if(waveTimer >= nextTickSpawnMark){
+                getNextSpawn().ifPresent(this::spawnEnemy);
+            }
+        }
+    }
+
+    private Optional<EnemyType> getNextSpawn(){
+        if(remainingEnemies.isEmpty())return Optional.empty();
+        return Optional.of(remainingEnemies.remove(Game.RANDOM.nextInt(remainingEnemies.size())));
+    }
+
+    private Optional<SpawnerTile> getRandomSpawnLocation(){
+        var spawnerTiles = game.getWorld().getSpawnerTiles();
+        if(spawnerTiles.isEmpty())return Optional.empty();
+        return Optional.of(spawnerTiles.remove(Game.RANDOM.nextInt(spawnerTiles.size())));
+    }
+
+    private int getNextTickSpawnMark(){
+        int maxTicks = waveTimer / remainingEnemies.size();
+        return waveTimer - Game.RANDOM.nextInt(maxTicks) + 1;
+    }
+
+
+    private void spawnEnemy(EnemyType enemyType){
+        var spawnLocationOpt = getRandomSpawnLocation();
+        if (spawnLocationOpt.isEmpty()) return;
+
+        var spawnLocation = spawnLocationOpt.get();
+
+        EnemyFactory.create(game, enemyType,spawnLocation.getX(), spawnLocation.getY());
+    }
+
+    public boolean isActive(){
+        return waveTimer>=0;
+    }
+
+    public int getWaveTimer(){
+        return waveTimer;
+    }
+
 }

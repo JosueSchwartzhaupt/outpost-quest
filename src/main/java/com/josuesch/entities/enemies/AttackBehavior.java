@@ -2,6 +2,8 @@ package com.josuesch.entities.enemies;
 
 import com.josuesch.entities.Enemy;
 
+import java.util.Optional;
+
 public interface AttackBehavior {
-    String attack(Enemy enemy);
+    Optional<String> attack(Enemy enemy);
 }
