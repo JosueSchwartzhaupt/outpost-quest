@@ -58,60 +58,47 @@ public class HitboxComparator {
         double dx = m.getSpeed() * Math.cos(m.getAngle());
         double dy = m.getSpeed() * Math.sin(m.getAngle());
 
-        double timeX = 0;
-        double timeY = 0;
+        double maxDx = dx;
+        double maxDy = dy;
 
-        // Tempo necessário para atingir o plano X do bloco
-        if (dx > 0) {
-            double dist = p.getX() - (m.getX() + m.getWidth());
-            if (dist > 0) timeX = dist / dx;
-        } else if (dx < 0) {
-            double dist = m.getX() - (p.getX() + p.getWidth());
-            if (dist > 0) timeX = dist / Math.abs(dx);
+        // 1. Checa colisão individual em X e Y
+        boolean collideX = isColiding(
+                m.getX() + dx, m.getY(),
+                m.getWidth(), m.getHeight(),
+                p.getX(), p.getY(), p.getWidth(), p.getHeight()
+        );
+
+        boolean collideY = isColiding(
+                m.getX(), m.getY() + dy,
+                m.getWidth(), m.getHeight(),
+                p.getX(), p.getY(), p.getWidth(), p.getHeight()
+        );
+
+        if (collideX) {
+            maxDx = (dx > 0)
+                    ? Math.max(0, p.getX() - (m.getX() + m.getWidth())) // Direita
+                    : -Math.max(0, m.getX() - (p.getX() + p.getWidth()));
         }
 
-        // Tempo necessário para atingir o plano Y do bloco
-        if (dy > 0) {
-            double dist = p.getY() - (m.getY() + m.getHeight());
-            if (dist > 0) timeY = dist / dy;
-        } else if (dy < 0) {
-            double dist = m.getY() - (p.getY() + p.getHeight());
-            if (dist > 0) timeY = dist / Math.abs(dy);
+        if (collideY) {
+            maxDy = (dy > 0)
+                    ? Math.max(0, p.getY() - (m.getY() + m.getHeight())) // Baixo
+                    : -Math.max(0, m.getY() - (p.getY() + p.getHeight()));
         }
 
-        // O contato com o bloco só ocorre quando ambos os eixos foram atingidos
-        double collisionTime = Math.max(timeX, timeY);
-        double maxSpeed = Math.min(m.getSpeed(), Math.max(0, collisionTime * m.getSpeed()));
+        // 2. Colisão exclusiva na quina exata (ambos limpos isoladamente, mas juntos colidem)
+        if (!collideX && !collideY) {
+            double distX = (dx > 0) ? p.getX() - (m.getX() + m.getWidth()) : m.getX() - (p.getX() + p.getWidth());
+            double distY = (dy > 0) ? p.getY() - (m.getY() + m.getHeight()) : m.getY() - (p.getY() + p.getHeight());
 
-        Direction direction;
-        if (timeX > timeY) {
-            direction = (dx < 0) ? Direction.LEFT : Direction.RIGHT;
-        } else if (timeY > timeX) {
-            direction = (dy < 0) ? Direction.UP : Direction.DOWN;
-        } else {
-            direction = getClosestWall(m, p);
+            if (distX < distY) {
+                maxDx = (dx > 0) ? Math.max(0, distX) : -Math.max(0, distX);
+            } else {
+                maxDy = (dy > 0) ? Math.max(0, distY) : -Math.max(0, distY);
+            }
         }
 
-        return new Collision(p, maxSpeed, direction);
-    }
-
-    public static Direction getClosestWall(Placeble m, Placeble p) {
-        double right = p.getX() - (m.getX() + m.getWidth());
-        double left = m.getX() - (p.getX() + p.getWidth());
-        double down = p.getY() - (m.getY() + m.getHeight());
-        double up = m.getY() - (p.getY() + p.getHeight());
-        right = right >= 0 ? right : Double.MAX_VALUE;
-        left = left >= 0 ? left : Double.MAX_VALUE;
-        down = down >= 0 ? down : Double.MAX_VALUE;
-        up = up >= 0 ? up : Double.MAX_VALUE;
-
-        double min = Math.min(Math.min(right, left), Math.min(down, up));
-        if (min == right) return Direction.RIGHT;
-        if (min == left) return Direction.LEFT;
-        if (min == down) return Direction.DOWN;
-        if (min == up) return Direction.UP;
-
-        return null;
+        return new Collision(p, maxDx, maxDy);
     }
 
     public static Optional<Collision> processCollision(Movable m, List<Placeble> placebles) {
@@ -120,7 +107,11 @@ public class HitboxComparator {
                 .filter(p -> !p.equals(m))
                 .filter(p -> willColide(m, p))
                 .map(p -> getCollision(m, p))
-                .min(Comparator.naturalOrder());
+                .reduce((c1, c2) -> new Collision(
+                        c2.hit(),
+                        Math.abs(c1.maxDxSpeed()) < Math.abs(c2.maxDxSpeed()) ? c1.maxDxSpeed() : c2.maxDxSpeed(),
+                        Math.abs(c1.maxDySpeed()) < Math.abs(c2.maxDySpeed()) ? c1.maxDySpeed() : c2.maxDySpeed()
+                ));
     }
 
     public static double getDistance(Placeble p1, Placeble p2) {
