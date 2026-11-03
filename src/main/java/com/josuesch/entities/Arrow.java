@@ -53,8 +53,10 @@ public class Arrow extends Entity implements Movable {
             hit.ifPresent(
                     e -> {
                         if (e instanceof Enemy) {
-                            ((Enemy) e).damage(1);
-                            this.dispawn();
+                            if(((Enemy) e).getHealth() >0) {
+                                ((Enemy) e).damage(1);
+                                this.dispawn();
+                            }
                         }
                         if (e.isColidable()) {
                             this.dispawn();

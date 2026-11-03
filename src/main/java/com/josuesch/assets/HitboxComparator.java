@@ -98,6 +98,9 @@ public class HitboxComparator {
             }
         }
 
+        if(Math.abs(maxDy)<0.000001)maxDy=0;
+        if(Math.abs(maxDx)<0.000001)maxDx=0;
+
         return new Collision(p, maxDx, maxDy);
     }
 

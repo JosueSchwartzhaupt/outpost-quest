@@ -9,11 +9,19 @@ import java.util.Optional;
 
 public class LinearMovement implements MovementBehavior {
 
-    private static final int MOVEMENT_HYSTERESIS = 3;
+    private static final double MOVEMENT_HYSTERESIS = 1;
     private static final int RANDOM_DECISION_TIME = 30;
+    private static final int MAX_STRIKES = 3;
+    private static final int STRIKE_PENALITY = 60;
     private int randomTick;
-    private int randomInt;
     boolean right, up, left, down;
+    int randomInt;
+
+    int movementStrike;
+    int movementStrikeIdx;
+
+    int randomStrikeInt1;
+    int randomStrikeInt2;
 
 
 
@@ -43,6 +51,10 @@ public class LinearMovement implements MovementBehavior {
             dx = collision.get().maxDxSpeed();
             dy = collision.get().maxDySpeed();
         }
+        if((enemy.getX() + dx)<0 || (enemy.getX() + dx) > enemy.getGame().getWorld().WIDTH * 16)dx=0;
+        if((enemy.getY() + dy)<0 || (enemy.getY() + dy) > enemy.getGame().getWorld().HEIGHT * 16)dy=0;
+
+        if(dy==0 && dx ==0)movementStrike++;
 
         enemy.setX(enemy.getX() + dx);
         enemy.setY(enemy.getY() + dy);
@@ -59,33 +71,80 @@ public class LinearMovement implements MovementBehavior {
         right = false;
         up = false;
         down = false;
-        if(enemy.getX() > player.getX() + MOVEMENT_HYSTERESIS) {
+
+        double enemyCenterX = enemy.getX() + (enemy.getWidth() / 2.0);
+        double playerCenterX = player.getX() + (player.getWidth() / 2.0);
+        double enemyCenterY = enemy.getY() + (enemy.getHeight() / 2.0);
+        double playerCenterY = player.getY() + (player.getHeight() / 2.0);
+
+
+        if (enemyCenterX > playerCenterX + MOVEMENT_HYSTERESIS) {
             left = true;
-        }
-        else if(enemy.getX() < player.getX() - MOVEMENT_HYSTERESIS) {
+        } else if (enemyCenterX < playerCenterX - MOVEMENT_HYSTERESIS) {
             right = true;
         }
-        if(enemy.getY() > player.getY() + MOVEMENT_HYSTERESIS) {
+        if (enemyCenterY > playerCenterY + MOVEMENT_HYSTERESIS) {
             up = true;
-        }
-        else if(enemy.getY() < player.getY() - MOVEMENT_HYSTERESIS) {
+        } else if (enemyCenterY < playerCenterY - MOVEMENT_HYSTERESIS) {
             down = true;
         }
+
+
         if((left || right)&&(up || down)) {
             if(randomTick >= RANDOM_DECISION_TIME) {
                 randomTick=0;
                 randomInt = Game.RANDOM.nextInt(3);
             }
             switch(randomInt) {
-                case 1:
+                case 1://Just Vertical
                     left = false;
                     right = false;
                     break;
-                case 2:
+                case 2:// Just Horizontal
                     up = false;
                     down = false;
                     break;
             }
+        }
+
+        if(movementStrike>MAX_STRIKES){
+            movementStrikeIdx++;
+            if(movementStrikeIdx>=STRIKE_PENALITY){
+                movementStrikeIdx = 0;
+                movementStrike=0;
+                randomStrikeInt1 = Game.RANDOM.nextInt(3);
+                randomStrikeInt2 = Game.RANDOM.nextInt(3);
+            }
+            switch(randomStrikeInt1) {
+                case 0:
+                    left = false;
+                    right = false;
+                    break;
+                case 1:
+                    left = false;
+                    right = true;
+                    break;
+                case 2:
+                    left = true;
+                    right = false;
+                    break;
+            }
+
+            switch(randomStrikeInt2) {
+                case 0:
+                    up = false;
+                    right = false;
+                    break;
+                case 1:
+                    up = true;
+                    down = false;
+                    break;
+                case 2:
+                    up = false;
+                    down = true;
+                    break;
+            }
+
         }
     }
 }
