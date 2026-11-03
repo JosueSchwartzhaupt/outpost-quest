@@ -52,13 +52,20 @@ public class Enemy extends Entity implements Movable {
 
     @Override
     public void tick() {
-        String animationStatus = movementBehavior.move(this).orElse("IDLE");
+        if (health > 0) {
+            String animationStatus = movementBehavior.move(this).orElse("IDLE");
 
-        animationStatus = attackBehavior.attack(this).orElse(animationStatus);
+            animationStatus = attackBehavior.attack(this).orElse(animationStatus);
 
-        animator.setAnimation(animationStatus);
-
-        if (health <= 0) this.dispawn();
+            animator.setAnimation(animationStatus);
+        }
+        else {
+            animator.setAnimation("DEAD");
+            if(animator.hasCompletedAnimation()){
+                this.dispawn();
+                return;
+            }
+        }
 
         animator.update();
     }

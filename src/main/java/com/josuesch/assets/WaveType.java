@@ -12,7 +12,7 @@ public enum WaveType {
             120 * 60,
             Map.of(
                     FIREMAN, 15,
-                    MUDLIN, 1)),
+                    MUDLIN, 5)),
     SECOND(
             90,
             Map.of(

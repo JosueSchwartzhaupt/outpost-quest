@@ -28,6 +28,7 @@ public class AnimationRegistry {
         mudlin.addAnimation("RIGHT", spritesheet.getSprites(0, 10, 16, 5));
         mudlin.addAnimation("LEFT", spritesheet.getSprites(0, 10, 16, 5));
         mudlin.addAnimation("HIDE", spritesheet.getSprites(0, 11, 16, 5));
+        mudlin.addAnimation("DEAD", spritesheet.getSprites(5, 10, 16, 5));
         putInCache(AnimationType.MUDLIN, mudlin);
 
         // --- PLAYER ---
