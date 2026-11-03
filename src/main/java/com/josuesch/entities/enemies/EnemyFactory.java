@@ -10,7 +10,7 @@ public class EnemyFactory {
         MovementBehavior movement =
                 switch (type) {
                     case FIREMAN -> new LinearMovement();
-                    case MUDLIN -> new LinearMovement();
+                    case MUDLIN -> new TeleportingMovement();
                 };
 
         AnimationType animationType =

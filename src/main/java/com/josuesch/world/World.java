@@ -14,6 +14,7 @@ public class World {
     private Tile[] tiles;
     private final List<Placeble> solidTiles = new ArrayList<>();
     private final List<SpawnerTile> spawnerTiles = new ArrayList<>();
+    private final List<FloorTile> floorTiles = new ArrayList<>();
     public int WIDTH, HEIGHT;
 
     private final Game game;
@@ -51,9 +52,10 @@ public class World {
                         game.getPlayer().setX(x - game.getPlayer().getWidth() / 2.0);
                         game.getPlayer().setY(y);
                     }
+                    FloorTile floorTile = new FloorTile(x, y, Tile.TILE_FLOOR, Game.RANDOM.nextInt(4));
+                    tiles[xx + (yy * WIDTH)] = floorTile;
+                    floorTiles.add(floorTile);
 
-                    tiles[xx + (yy * WIDTH)] =
-                            new FloorTile(x, y, Tile.TILE_FLOOR, Game.RANDOM.nextInt(4));
                 }
             }
         } catch (IOException e) {
@@ -78,5 +80,9 @@ public class World {
 
     public List<SpawnerTile> getSpawnerTiles() {
         return spawnerTiles;
+    }
+
+    public FloorTile getRandomFloorTile() {
+        return floorTiles.get(Game.RANDOM.nextInt(floorTiles.size()));
     }
 }

@@ -3,6 +3,7 @@ package com.josuesch.entities;
 import com.josuesch.Game;
 import com.josuesch.assets.Movable;
 import com.josuesch.assets.animation.AnimationType;
+import com.josuesch.assets.animation.Animator;
 import com.josuesch.entities.enemies.AttackBehavior;
 import com.josuesch.entities.enemies.EnemyType;
 import com.josuesch.entities.enemies.MovementBehavior;
@@ -86,5 +87,9 @@ public class Enemy extends Entity implements Movable {
 
     public int getHealth() {
         return health;
+    }
+
+    public Animator getAnimator(){
+        return animator;
     }
 }
