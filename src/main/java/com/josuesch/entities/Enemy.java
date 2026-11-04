@@ -10,15 +10,15 @@ import com.josuesch.entities.enemies.MovementBehavior;
 
 public class Enemy extends Entity implements Movable {
 
-    public static final int MAX_HEALTH = 3;
+    public final int baseHealth;
 
     private final EnemyType type;
     private final MovementBehavior movementBehavior;
     private final AttackBehavior attackBehavior;
 
-    private int health = MAX_HEALTH;
+    private int health;
 
-    private double speed=1;
+    private double speed;
     private double angle;
 
     public Enemy(
@@ -26,6 +26,8 @@ public class Enemy extends Entity implements Movable {
             EnemyType type,
             MovementBehavior movementBehavior,
             AttackBehavior attackBehavior,
+            int health,
+            double speed,
             double x,
             double y,
             int width,
@@ -35,6 +37,9 @@ public class Enemy extends Entity implements Movable {
         this.type = type;
         this.movementBehavior = movementBehavior;
         this.attackBehavior = attackBehavior;
+        this.speed = speed;
+        this.baseHealth = health;
+        this.health = baseHealth;
     }
 
     public void setAngle(double angle) {
@@ -76,7 +81,7 @@ public class Enemy extends Entity implements Movable {
     }
 
     public void heal(int healPoints) {
-        this.health = Math.min(health + healPoints, MAX_HEALTH);
+        this.health = Math.min(health + healPoints, baseHealth);
     }
 
     public void damage(int damage) {

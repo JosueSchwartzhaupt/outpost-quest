@@ -6,11 +6,13 @@ import java.util.Optional;
 
 public class MeleeAttack implements AttackBehavior {
     private int hitSpeed;
+    private int damage;
     private int hitSpeedIdx;
 
-    public MeleeAttack(int hitSpeed) {
+    public MeleeAttack(int hitSpeed, int damage) {
         this.hitSpeed = hitSpeed;
         this.hitSpeedIdx = hitSpeed;
+        this.damage = damage;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class MeleeAttack implements AttackBehavior {
         if (hitSpeedIdx >= hitSpeed) {
             hitSpeedIdx = 0;
 
-            player.damage(1);
+            player.damage(damage);
         }
 
         return Optional.empty();
