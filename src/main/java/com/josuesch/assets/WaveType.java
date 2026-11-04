@@ -11,7 +11,7 @@ public enum WaveType {
     FIRST(
             120 * 60,
             Map.of(
-                    FIREMAN, 0,
+                    FIREMAN, 15,
                     MUDLIN, 5)),
     SECOND(
             90,
