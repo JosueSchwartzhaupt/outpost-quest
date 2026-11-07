@@ -1,5 +1,6 @@
 package com.josuesch;
 
+import com.josuesch.assets.GameState;
 import com.josuesch.assets.Placeble;
 import com.josuesch.assets.Wave;
 import com.josuesch.assets.animation.AnimationRegistry;
@@ -7,6 +8,7 @@ import com.josuesch.assets.WaveType;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
+import com.josuesch.graphics.Menu;
 import com.josuesch.graphics.Spritesheet;
 import com.josuesch.graphics.UI;
 import com.josuesch.world.World;
@@ -43,15 +45,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private World world;
     private UI ui;
     private Wave wave;
-
-    private boolean started = false;
-    private boolean gameOver = false;
+    private Menu menu;
 
     private final List<Placeble> collidablesBuffer = new ArrayList<>();
 
     private final List<Entity> entitiesToRemove = new ArrayList<>();
 
+    private GameState gameState;
+
     public Game() {
+        gameState = GameState.MENU;
         addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
@@ -66,6 +69,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         ui = new UI(this);
 
         wave = new Wave(this, WaveType.FIRST);
+        menu = new Menu(this);
     }
 
     private void initFrame() {
@@ -100,7 +104,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         entities.add(player);
         world = new World(this, "/map.png");
         wave = new Wave(this, WaveType.FIRST);
-        gameOver = false;
+        gameState = GameState.RUNNING;
     }
 
     @Override
@@ -130,23 +134,31 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        if (hasStarted()) {
-            wave.update();
-            for (int i = 0; i < entities.size(); i++) {
-                entities.get(i).tick();
-            }
+        switch (gameState){
+            case MENU:
+                menu.tick();
+                break;
+            case RUNNING:
+                wave.update();
+                for (int i = 0; i < entities.size(); i++) {
+                    entities.get(i).tick();
+                }
 
-            if (!entitiesToRemove.isEmpty()) {
-                entities.removeAll(entitiesToRemove);
-                enemies.removeAll(entitiesToRemove);
-                entitiesToRemove.clear();
-            }
+                if (!entitiesToRemove.isEmpty()) {
+                    entities.removeAll(entitiesToRemove);
+                    enemies.removeAll(entitiesToRemove);
+                    entitiesToRemove.clear();
+                }
+
+                if (player.isDead()) {
+                    gameState = GameState.GAME_OVER;
+                }
+                if (enemies.isEmpty() && !wave.isActive()){
+                    gameState = GameState.WIN;
+                }
+                break;
         }
 
-        if (player.isDead() || isWin()) {
-            gameOver = true;
-            started = false;
-        }
     }
 
     private void render() {
@@ -175,6 +187,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         // bota essa tela de fundo no buffer(escalando para a tela)
         g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
+        if(gameState == GameState.MENU)
+            menu.render(g);
+
         bs.show();
     }
 
@@ -183,38 +198,60 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (isGameOver()) {
-                restart();
-            }
-            if (hasNotStarted()) {
-                started = true;
-            }
+        switch (gameState){
+            case RUNNING:
+                if (e.getKeyCode() == KeyEvent.VK_D) {
+                    player.setRight(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_A) {
+                    player.setLeft(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_W) {
+                    player.setUp(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    player.setDown(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    player.setShootRight(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    player.setShootLeft(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    player.setShootUp(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    player.setShootDown(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    player.setRight(false);
+                    player.setLeft(false);
+                    player.setUp(false);
+                    player.setDown(false);
+                    gameState = GameState.MENU;
+                }
+                break;
+            case MENU:
+                if (e.getKeyCode() == KeyEvent.VK_UP ||
+                        e.getKeyCode() == KeyEvent.VK_W) {
+                    menu.setUp(true);
+
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN ||
+                        e.getKeyCode() == KeyEvent.VK_S) {
+                    menu.setDown(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    menu.setEnter(true);
+                }
+            default:
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    restart();
+                }
+
         }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            player.setRight(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            player.setLeft(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            player.setUp(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            player.setDown(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.setShootRight(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.setShootLeft(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            player.setShootUp(true);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            player.setShootDown(true);
-        }
+
     }
 
     @Override
@@ -286,23 +323,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
         enemies.addAll(newEnemies);
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean isWin() {
-        return false;
-    }
-
-    public boolean hasNotStarted() {
-        return !started;
-    }
-
-    public boolean hasStarted() {
-        return started;
-    }
-
     public void queueRemoval(Entity entity) {
         entitiesToRemove.add(entity);
+    }
+
+    public GameState getGameState(){
+        return gameState;
+    }
+
+    public void setGameState(GameState state){
+        this.gameState = state;
     }
 }
