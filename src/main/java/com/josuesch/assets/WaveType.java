@@ -10,7 +10,7 @@ import java.util.Map;
 
 public enum WaveType {
     FIRST(
-            120 * 60,
+            80 * 60,
             Map.of(
                     FIREMAN, 15,
                     MUDLIN, 5)),
@@ -35,5 +35,9 @@ public enum WaveType {
 
     public Map<EnemyType, Integer> getEnemyConfig() {
         return enemyConfig;
+    }
+
+    public int getWaveSize() {
+        return enemyConfig.values().stream().mapToInt(e -> e).sum();
     }
 }

@@ -21,8 +21,6 @@ public class Player extends Entity implements Movable {
 
     private int health = MAX_HEALTH;
 
-    private int points;
-
     private int shootingDrawback = 20;
     private int shootingIdx = shootingDrawback;
 
@@ -162,18 +160,6 @@ public class Player extends Entity implements Movable {
     @Override
     public double getSpeed() {
         return speed;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void addPoints(int points) {
-        this.points += points;
-    }
-
-    public void removePoints(int points) {
-        this.points -= points;
     }
 
     public void heal(int healPoints) {

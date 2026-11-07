@@ -14,6 +14,8 @@ public class UI {
     public static final BufferedImage EMPTY_HEART =
             Game.SPRITESHEET.getSprite(16 * 1, 16 * 9, 16, 16);
 
+    public static final int BAR_SIZE = 100;
+
     private final Game game;
 
     public UI(Game game) {
@@ -23,11 +25,14 @@ public class UI {
     public void render(Graphics g) {
         var health = game.getPlayer().getHealth();
         for (int i = 0; i < Player.MAX_HEALTH; i++) {
-            if (i < health) g.drawImage(FULL_HEART, 4 + 11 * i, 0, null);
-            else g.drawImage(EMPTY_HEART, 4 + 11 * i, 0, null);
+            if (i < health) g.drawImage(FULL_HEART, 4 + 11 * i, 4, null);
+            else g.drawImage(EMPTY_HEART, 4 + 11 * i, 4, null);
         }
-        g.setColor(new Color(255, 255, 255));
-        g.drawString("Points: " + game.getPlayer().getPoints(), 150 - 25, 14);
+        g.setColor(new Color(119, 65, 64));
+        g.fillRect(180, 4,BAR_SIZE, 9);
+        g.setColor(new Color(225, 52, 38));
+        int remainingBar = (int)((double)(game.getWave().getRemainingEnemiesSize() + game.getEnemies().size()) / (double)game.getWave().getTotalEnemiesSize() * BAR_SIZE);
+        g.fillRect(180, 4,remainingBar, 9);
 
         var state = game.getGameState();
         if (state == GameState.GAME_OVER) {

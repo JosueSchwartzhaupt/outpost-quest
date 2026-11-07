@@ -1,9 +1,9 @@
 package com.josuesch;
 
 import com.josuesch.assets.GameState;
+import com.josuesch.assets.Levels;
 import com.josuesch.assets.Placeble;
 import com.josuesch.assets.Wave;
-import com.josuesch.assets.WaveType;
 import com.josuesch.assets.animation.AnimationRegistry;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
@@ -53,6 +53,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private GameState gameState;
 
+    private Levels level;
+
     public Game() {
         gameState = GameState.MENU;
         addKeyListener(this);
@@ -64,11 +66,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         player = new Player(this, 100, 180);
         entities.add(player);
-        world = new World(this, "/map.png");
+        level = Levels.LEVEL_1;
+        world = new World(this, level.getMapPath());
+        wave = new Wave(this, level.getWaveType());
 
         ui = new UI(this);
 
-        wave = new Wave(this, WaveType.FIRST);
         menu = new Menu(this);
     }
 
@@ -102,9 +105,24 @@ public class Game extends Canvas implements Runnable, KeyListener {
         enemies.clear();
         player = new Player(this, 100, 180);
         entities.add(player);
-        world = new World(this, "/map.png");
-        wave = new Wave(this, WaveType.FIRST);
+        level = Levels.LEVEL_1;
+        world = new World(this, level.getMapPath());
+        wave = new Wave(this, level.getWaveType());
         gameState = GameState.RUNNING;
+    }
+
+    public void goToNextLevel() {
+        entities.clear();
+        enemies.clear();
+        player = new Player(this, 100, 180);
+        entities.add(player);
+        level = level.getNextLevel();
+        if(level == null){
+            gameState = GameState.WIN;
+            return;
+        }
+        world = new World(this, level.getMapPath());
+        wave = new Wave(this, level.getWaveType());
     }
 
     @Override
@@ -154,7 +172,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
                     gameState = GameState.GAME_OVER;
                 }
                 if (enemies.isEmpty() && !wave.isActive()) {
-                    gameState = GameState.WIN;
+                    goToNextLevel();
                 }
                 break;
         }
@@ -281,6 +299,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public World getWorld() {
         return world;
+    }
+
+    public Wave getWave() {
+        return wave;
     }
 
     public List<Entity> getEntities() {

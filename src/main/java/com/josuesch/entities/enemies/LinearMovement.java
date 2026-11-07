@@ -10,7 +10,7 @@ public class LinearMovement implements MovementBehavior {
 
     private static final double MOVEMENT_HYSTERESIS = 1;
     private static final int RANDOM_DECISION_TIME = 30;
-    private static final int MAX_STRIKES = 6;
+    private static final int MAX_STRIKES = 60;
     private static final int STRIKE_PENALITY = 60;
     private int randomTick;
     boolean right, up, left, down;

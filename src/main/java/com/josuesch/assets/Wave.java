@@ -56,7 +56,7 @@ public class Wave {
     }
 
     private int getNextTickSpawnMark() {
-        if (remainingEnemies.isEmpty()) return 0;
+        if (remainingEnemies.size()<=1) return 0;
         int maxTicks = waveTimer / remainingEnemies.size();
         return waveTimer - Game.RANDOM.nextInt(maxTicks) + 1;
     }
@@ -75,7 +75,10 @@ public class Wave {
         return waveTimer >= 0;
     }
 
-    public int getWaveTimer() {
-        return waveTimer;
+    public int getRemainingEnemiesSize() {
+        return remainingEnemies.size();
+    }
+    public int getTotalEnemiesSize() {
+        return type.getWaveSize();
     }
 }
