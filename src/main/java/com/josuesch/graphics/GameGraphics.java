@@ -34,8 +34,11 @@ public class GameGraphics {
     }
 
     public static BufferedImage applyRedMask(BufferedImage originalSprite) {
-        BufferedImage newSprite = new BufferedImage(
-                originalSprite.getWidth(), originalSprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newSprite =
+                new BufferedImage(
+                        originalSprite.getWidth(),
+                        originalSprite.getHeight(),
+                        BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = newSprite.createGraphics();
         g2d.drawImage(originalSprite, 0, 0, null);

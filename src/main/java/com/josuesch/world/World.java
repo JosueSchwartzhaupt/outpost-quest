@@ -52,10 +52,10 @@ public class World {
                         game.getPlayer().setX(x - game.getPlayer().getWidth() / 2.0);
                         game.getPlayer().setY(y);
                     }
-                    FloorTile floorTile = new FloorTile(x, y, Tile.TILE_FLOOR, Game.RANDOM.nextInt(4));
+                    FloorTile floorTile =
+                            new FloorTile(x, y, Tile.TILE_FLOOR, Game.RANDOM.nextInt(4));
                     tiles[xx + (yy * WIDTH)] = floorTile;
                     floorTiles.add(floorTile);
-
                 }
             }
         } catch (IOException e) {

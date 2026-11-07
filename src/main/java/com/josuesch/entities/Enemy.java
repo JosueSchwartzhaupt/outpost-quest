@@ -68,10 +68,9 @@ public class Enemy extends Entity implements Movable {
             animationStatus = attackBehavior.attack(this).orElse(animationStatus);
 
             animator.setAnimation(animationStatus);
-        }
-        else {
+        } else {
             animator.setAnimation("DEAD");
-            if(animator.hasCompletedAnimation()){
+            if (animator.hasCompletedAnimation()) {
                 this.dispawn();
                 return;
             }
@@ -98,7 +97,7 @@ public class Enemy extends Entity implements Movable {
         return health;
     }
 
-    public Animator getAnimator(){
+    public Animator getAnimator() {
         return animator;
     }
 }

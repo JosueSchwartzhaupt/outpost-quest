@@ -4,7 +4,6 @@ import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Player;
-
 import java.util.Optional;
 
 public class LinearMovement implements MovementBehavior {
@@ -23,12 +22,10 @@ public class LinearMovement implements MovementBehavior {
     int randomStrikeInt1;
     int randomStrikeInt2;
 
-
-
     @Override
     public Optional<String> move(Enemy enemy) {
         var player = enemy.getGame().getPlayer();
-        if(randomTick < RANDOM_DECISION_TIME)randomTick++;
+        if (randomTick < RANDOM_DECISION_TIME) randomTick++;
 
         chooseRandomDirectionToPlayer(enemy, player);
 
@@ -47,14 +44,16 @@ public class LinearMovement implements MovementBehavior {
         enemy.setAngle(angle);
 
         var collision = HitboxComparator.processCollision(enemy, enemy.getGame().getCollidables());
-        if (collision.isPresent()){
+        if (collision.isPresent()) {
             dx = collision.get().maxDxSpeed();
             dy = collision.get().maxDySpeed();
         }
-        if((enemy.getX() + dx)<0 || (enemy.getX() + dx) > enemy.getGame().getWorld().WIDTH * 16)dx=0;
-        if((enemy.getY() + dy)<0 || (enemy.getY() + dy) > enemy.getGame().getWorld().HEIGHT * 16)dy=0;
+        if ((enemy.getX() + dx) < 0 || (enemy.getX() + dx) > enemy.getGame().getWorld().WIDTH * 16)
+            dx = 0;
+        if ((enemy.getY() + dy) < 0 || (enemy.getY() + dy) > enemy.getGame().getWorld().HEIGHT * 16)
+            dy = 0;
 
-        if(dy==0 && dx ==0)movementStrike++;
+        if (dy == 0 && dx == 0) movementStrike++;
 
         enemy.setX(enemy.getX() + dx);
         enemy.setY(enemy.getY() + dy);
@@ -77,7 +76,6 @@ public class LinearMovement implements MovementBehavior {
         double enemyCenterY = enemy.getY() + (enemy.getHeight() / 2.0);
         double playerCenterY = player.getY() + (player.getHeight() / 2.0);
 
-
         if (enemyCenterX > playerCenterX + MOVEMENT_HYSTERESIS) {
             left = true;
         } else if (enemyCenterX < playerCenterX - MOVEMENT_HYSTERESIS) {
@@ -89,33 +87,32 @@ public class LinearMovement implements MovementBehavior {
             down = true;
         }
 
-
-        if((left || right)&&(up || down)) {
-            if(randomTick >= RANDOM_DECISION_TIME) {
-                randomTick=0;
+        if ((left || right) && (up || down)) {
+            if (randomTick >= RANDOM_DECISION_TIME) {
+                randomTick = 0;
                 randomInt = Game.RANDOM.nextInt(3);
             }
-            switch(randomInt) {
-                case 1://Just Vertical
+            switch (randomInt) {
+                case 1: // Just Vertical
                     left = false;
                     right = false;
                     break;
-                case 2:// Just Horizontal
+                case 2: // Just Horizontal
                     up = false;
                     down = false;
                     break;
             }
         }
 
-        if(movementStrike>MAX_STRIKES){
+        if (movementStrike > MAX_STRIKES) {
             movementStrikeIdx++;
-            if(movementStrikeIdx>=STRIKE_PENALITY){
+            if (movementStrikeIdx >= STRIKE_PENALITY) {
                 movementStrikeIdx = 0;
-                movementStrike=0;
+                movementStrike = 0;
                 randomStrikeInt1 = Game.RANDOM.nextInt(3);
                 randomStrikeInt2 = Game.RANDOM.nextInt(3);
             }
-            switch(randomStrikeInt1) {
+            switch (randomStrikeInt1) {
                 case 0:
                     left = false;
                     right = false;
@@ -130,7 +127,7 @@ public class LinearMovement implements MovementBehavior {
                     break;
             }
 
-            switch(randomStrikeInt2) {
+            switch (randomStrikeInt2) {
                 case 0:
                     up = false;
                     right = false;
@@ -144,7 +141,6 @@ public class LinearMovement implements MovementBehavior {
                     down = true;
                     break;
             }
-
         }
     }
 }

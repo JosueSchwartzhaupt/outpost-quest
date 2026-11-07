@@ -43,9 +43,8 @@ public class Player extends Entity implements Movable {
         dx = speed * (horizontal / mag);
         dy = speed * (vertical / mag);
 
-
         var collision = HitboxComparator.processCollision(this, game.getPlayerCollidables());
-        if (collision.isPresent()){
+        if (collision.isPresent()) {
             dx = collision.get().maxDxSpeed();
             dy = collision.get().maxDySpeed();
         }

@@ -30,18 +30,18 @@ public class UI {
         g.drawString("Points: " + game.getPlayer().getPoints(), 150 - 25, 14);
 
         var state = game.getGameState();
-        if(state == GameState.GAME_OVER) {
-            g.setColor(new Color(255,0,0,50));
+        if (state == GameState.GAME_OVER) {
+            g.setColor(new Color(255, 0, 0, 50));
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
-            g.setColor(new Color(0,0,0));
+            g.setColor(new Color(0, 0, 0));
             g.drawString("YOU DIED", 75, 90);
             g.drawString("PRESS ENTER", 60, 150);
             g.drawString("TO TRY AGAIN", 62, 165);
         }
-        if(state == GameState.WIN) {
-            g.setColor(new Color(0,255,0,50));
-            g.fillRect(0, 0,  Game.WIDTH, Game.HEIGHT);
-            g.setColor(new Color(0,0,0));
+        if (state == GameState.WIN) {
+            g.setColor(new Color(0, 255, 0, 50));
+            g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
+            g.setColor(new Color(0, 0, 0));
             g.drawString("YOU WIN", 75, 90);
             g.drawString("PRESS ENTER", 60, 150);
             g.drawString("TO START AGAIN", 62, 165);

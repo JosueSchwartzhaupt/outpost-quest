@@ -1,7 +1,6 @@
 package com.josuesch.assets.animation;
 
 import com.josuesch.graphics.GameGraphics;
-
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -39,12 +38,11 @@ public class Animator {
     }
 
     public void update() {
-        if(temporaryRedMask){
+        if (temporaryRedMask) {
             redMaskFrames++;
-            if(redMaskFrames>=maxRedMaskFrames)
-            {
+            if (redMaskFrames >= maxRedMaskFrames) {
                 temporaryRedMask = false;
-                redMaskFrames=0;
+                redMaskFrames = 0;
             }
         }
 
@@ -52,7 +50,7 @@ public class Animator {
         if (frames == null || frames.isEmpty()) return;
 
         timer++;
-        if (timer >= speed -1) {
+        if (timer >= speed - 1) {
             completedAnimation = currentFrame == frames.size() - 1;
         }
         if (timer >= speed) {
@@ -65,11 +63,11 @@ public class Animator {
         List<BufferedImage> frames = animationData.getFrames(currentAnimState);
         if (frames == null || frames.isEmpty()) return null;
         var sprite = frames.get(currentFrame);
-        if(temporaryRedMask)sprite = GameGraphics.applyRedMask(sprite);
+        if (temporaryRedMask) sprite = GameGraphics.applyRedMask(sprite);
         return sprite;
     }
 
-    public boolean hasCompletedAnimation(){
+    public boolean hasCompletedAnimation() {
         return completedAnimation;
     }
 }

@@ -3,8 +3,8 @@ package com.josuesch;
 import com.josuesch.assets.GameState;
 import com.josuesch.assets.Placeble;
 import com.josuesch.assets.Wave;
-import com.josuesch.assets.animation.AnimationRegistry;
 import com.josuesch.assets.WaveType;
+import com.josuesch.assets.animation.AnimationRegistry;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
@@ -134,7 +134,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        switch (gameState){
+        switch (gameState) {
             case MENU:
                 menu.tick();
                 break;
@@ -153,12 +153,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 if (player.isDead()) {
                     gameState = GameState.GAME_OVER;
                 }
-                if (enemies.isEmpty() && !wave.isActive()){
+                if (enemies.isEmpty() && !wave.isActive()) {
                     gameState = GameState.WIN;
                 }
                 break;
         }
-
     }
 
     private void render() {
@@ -187,8 +186,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         // bota essa tela de fundo no buffer(escalando para a tela)
         g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
-        if(gameState == GameState.MENU)
-            menu.render(g);
+        if (gameState == GameState.MENU) menu.render(g);
 
         bs.show();
     }
@@ -198,7 +196,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (gameState){
+        switch (gameState) {
             case RUNNING:
                 if (e.getKeyCode() == KeyEvent.VK_D) {
                     player.setRight(true);
@@ -233,13 +231,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 }
                 break;
             case MENU:
-                if (e.getKeyCode() == KeyEvent.VK_UP ||
-                        e.getKeyCode() == KeyEvent.VK_W) {
+                if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
                     menu.setUp(true);
-
                 }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN ||
-                        e.getKeyCode() == KeyEvent.VK_S) {
+                if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
                     menu.setDown(true);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -249,9 +244,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     restart();
                 }
-
         }
-
     }
 
     @Override
@@ -327,11 +320,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         entitiesToRemove.add(entity);
     }
 
-    public GameState getGameState(){
+    public GameState getGameState() {
         return gameState;
     }
 
-    public void setGameState(GameState state){
+    public void setGameState(GameState state) {
         this.gameState = state;
     }
 }

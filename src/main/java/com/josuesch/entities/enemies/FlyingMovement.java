@@ -3,7 +3,6 @@ package com.josuesch.entities.enemies;
 import com.josuesch.Game;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Player;
-
 import java.util.Optional;
 
 public class FlyingMovement implements MovementBehavior {
@@ -15,12 +14,10 @@ public class FlyingMovement implements MovementBehavior {
     boolean right, up, left, down;
     int randomInt;
 
-
-
     @Override
     public Optional<String> move(Enemy enemy) {
         var player = enemy.getGame().getPlayer();
-        if(randomTick < RANDOM_DECISION_TIME)randomTick++;
+        if (randomTick < RANDOM_DECISION_TIME) randomTick++;
 
         chooseRandomDirectionToPlayer(enemy, player);
 
@@ -59,7 +56,6 @@ public class FlyingMovement implements MovementBehavior {
         double enemyCenterY = enemy.getY() + (enemy.getHeight() / 2.0);
         double playerCenterY = player.getY() + (player.getHeight() / 2.0);
 
-
         if (enemyCenterX > playerCenterX + MOVEMENT_HYSTERESIS) {
             left = true;
         } else if (enemyCenterX < playerCenterX - MOVEMENT_HYSTERESIS) {
@@ -71,18 +67,17 @@ public class FlyingMovement implements MovementBehavior {
             down = true;
         }
 
-
-        if((left || right)&&(up || down)) {
-            if(randomTick >= RANDOM_DECISION_TIME) {
-                randomTick=0;
+        if ((left || right) && (up || down)) {
+            if (randomTick >= RANDOM_DECISION_TIME) {
+                randomTick = 0;
                 randomInt = Game.RANDOM.nextInt(6);
             }
-            switch(randomInt) {
-                case 1://Just Vertical
+            switch (randomInt) {
+                case 1: // Just Vertical
                     left = false;
                     right = false;
                     break;
-                case 2:// Just Horizontal
+                case 2: // Just Horizontal
                     up = false;
                     down = false;
                     break;

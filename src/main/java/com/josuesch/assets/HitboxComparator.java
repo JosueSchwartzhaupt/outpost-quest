@@ -1,6 +1,5 @@
 package com.josuesch.assets;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,34 +61,52 @@ public class HitboxComparator {
         double maxDy = dy;
 
         // 1. Checa colisão individual em X e Y
-        boolean collideX = isColiding(
-                m.getX() + dx, m.getY(),
-                m.getWidth(), m.getHeight(),
-                p.getX(), p.getY(), p.getWidth(), p.getHeight()
-        );
+        boolean collideX =
+                isColiding(
+                        m.getX() + dx,
+                        m.getY(),
+                        m.getWidth(),
+                        m.getHeight(),
+                        p.getX(),
+                        p.getY(),
+                        p.getWidth(),
+                        p.getHeight());
 
-        boolean collideY = isColiding(
-                m.getX(), m.getY() + dy,
-                m.getWidth(), m.getHeight(),
-                p.getX(), p.getY(), p.getWidth(), p.getHeight()
-        );
+        boolean collideY =
+                isColiding(
+                        m.getX(),
+                        m.getY() + dy,
+                        m.getWidth(),
+                        m.getHeight(),
+                        p.getX(),
+                        p.getY(),
+                        p.getWidth(),
+                        p.getHeight());
 
         if (collideX) {
-            maxDx = (dx > 0)
-                    ? Math.max(0, p.getX() - (m.getX() + m.getWidth())) // Direita
-                    : -Math.max(0, m.getX() - (p.getX() + p.getWidth()));
+            maxDx =
+                    (dx > 0)
+                            ? Math.max(0, p.getX() - (m.getX() + m.getWidth())) // Direita
+                            : -Math.max(0, m.getX() - (p.getX() + p.getWidth()));
         }
 
         if (collideY) {
-            maxDy = (dy > 0)
-                    ? Math.max(0, p.getY() - (m.getY() + m.getHeight())) // Baixo
-                    : -Math.max(0, m.getY() - (p.getY() + p.getHeight()));
+            maxDy =
+                    (dy > 0)
+                            ? Math.max(0, p.getY() - (m.getY() + m.getHeight())) // Baixo
+                            : -Math.max(0, m.getY() - (p.getY() + p.getHeight()));
         }
 
         // 2. Colisão exclusiva na quina exata (ambos limpos isoladamente, mas juntos colidem)
         if (!collideX && !collideY) {
-            double distX = (dx > 0) ? p.getX() - (m.getX() + m.getWidth()) : m.getX() - (p.getX() + p.getWidth());
-            double distY = (dy > 0) ? p.getY() - (m.getY() + m.getHeight()) : m.getY() - (p.getY() + p.getHeight());
+            double distX =
+                    (dx > 0)
+                            ? p.getX() - (m.getX() + m.getWidth())
+                            : m.getX() - (p.getX() + p.getWidth());
+            double distY =
+                    (dy > 0)
+                            ? p.getY() - (m.getY() + m.getHeight())
+                            : m.getY() - (p.getY() + p.getHeight());
 
             if (distX < distY) {
                 maxDx = (dx > 0) ? Math.max(0, distX) : -Math.max(0, distX);
@@ -98,8 +115,8 @@ public class HitboxComparator {
             }
         }
 
-        if(Math.abs(maxDy)<0.000001)maxDy=0;
-        if(Math.abs(maxDx)<0.000001)maxDx=0;
+        if (Math.abs(maxDy) < 0.000001) maxDy = 0;
+        if (Math.abs(maxDx) < 0.000001) maxDx = 0;
 
         return new Collision(p, maxDx, maxDy);
     }
@@ -110,11 +127,16 @@ public class HitboxComparator {
                 .filter(p -> !p.equals(m))
                 .filter(p -> willColide(m, p))
                 .map(p -> getCollision(m, p))
-                .reduce((c1, c2) -> new Collision(
-                        c2.hit(),
-                        Math.abs(c1.maxDxSpeed()) < Math.abs(c2.maxDxSpeed()) ? c1.maxDxSpeed() : c2.maxDxSpeed(),
-                        Math.abs(c1.maxDySpeed()) < Math.abs(c2.maxDySpeed()) ? c1.maxDySpeed() : c2.maxDySpeed()
-                ));
+                .reduce(
+                        (c1, c2) ->
+                                new Collision(
+                                        c2.hit(),
+                                        Math.abs(c1.maxDxSpeed()) < Math.abs(c2.maxDxSpeed())
+                                                ? c1.maxDxSpeed()
+                                                : c2.maxDxSpeed(),
+                                        Math.abs(c1.maxDySpeed()) < Math.abs(c2.maxDySpeed())
+                                                ? c1.maxDySpeed()
+                                                : c2.maxDySpeed()));
     }
 
     public static double getDistance(Placeble p1, Placeble p2) {
