@@ -52,8 +52,18 @@ public class AnimationRegistry {
         // --- ARROW ---
         AnimationData arrow = new AnimationData();
         arrow.addAnimation("IDLE", spritesheet.getSprites(3, 5, 16, 1));
-        arrow.addAnimation("ROTATED", spritesheet.getSprites(3, 6, 16, 1));
+        arrow.addAnimation("ROTATED", spritesheet.getSprites(4, 5, 16, 1));
         putInCache(AnimationType.ARROW, arrow);
+
+        // --- BAT ---
+        AnimationData bat = new AnimationData();
+        bat.addAnimation("IDLE", spritesheet.getSprites(0, 6, 16, 2));
+        bat.addAnimation("DOWN", spritesheet.getSprites(0, 6, 16, 2));
+        bat.addAnimation("RIGHT", spritesheet.getSprites(0, 6, 16, 2));
+        bat.addAnimation("UP", spritesheet.getSprites(0, 6, 16, 2));
+        bat.addAnimation("LEFT", spritesheet.getSprites(0, 6, 16, 2));
+        bat.addAnimation("DEAD", spritesheet.getSprites(2, 6, 16, 5));
+        putInCache(AnimationType.BAT, bat);
     }
 
     public static AnimationData get(AnimationType type) {

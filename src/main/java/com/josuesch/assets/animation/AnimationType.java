@@ -4,5 +4,6 @@ public enum AnimationType {
     FIREMAN,
     MUDLIN,
     PLAYER,
-    ARROW
+    ARROW,
+    BAT
 }

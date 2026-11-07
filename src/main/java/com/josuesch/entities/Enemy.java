@@ -32,7 +32,9 @@ public class Enemy extends Entity implements Movable {
             double y,
             int width,
             int height,
-            AnimationType animationType) {
+            AnimationType animationType,
+            int xSpriteOffset,
+            int ySpriteOffset) {
         super(game, x, y, width, height, animationType);
         this.type = type;
         this.movementBehavior = movementBehavior;
@@ -40,6 +42,8 @@ public class Enemy extends Entity implements Movable {
         this.speed = speed;
         this.baseHealth = health;
         this.health = baseHealth;
+        this.xSpriteOffset = xSpriteOffset;
+        this.ySpriteOffset = ySpriteOffset;
     }
 
     public void setAngle(double angle) {

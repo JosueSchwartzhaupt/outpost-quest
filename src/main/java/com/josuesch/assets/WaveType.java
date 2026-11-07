@@ -1,5 +1,6 @@
 package com.josuesch.assets;
 
+import static com.josuesch.entities.enemies.EnemyType.BAT;
 import static com.josuesch.entities.enemies.EnemyType.FIREMAN;
 import static com.josuesch.entities.enemies.EnemyType.MUDLIN;
 
@@ -14,10 +15,11 @@ public enum WaveType {
                     FIREMAN, 15,
                     MUDLIN, 5)),
     SECOND(
-            90,
+            120 * 60,
             Map.of(
-                    FIREMAN, 5,
-                    MUDLIN, 3));
+                    FIREMAN, 25,
+                    MUDLIN, 10,
+                    BAT, 10));
 
     private final int waveTime;
     private final Map<EnemyType, Integer> enemyConfig;
