@@ -49,8 +49,11 @@ public class Menu {
                 case 0:
                     game.setGameState(GameState.RUNNING);
                     break;
+                case 1:
+                    game.loadGame();
+                    break;
                 case 2:
-                    System.exit(1);
+                    game.exitGame();
                     break;
             }
         }

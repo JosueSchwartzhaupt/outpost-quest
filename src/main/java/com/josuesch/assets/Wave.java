@@ -3,6 +3,7 @@ package com.josuesch.assets;
 import com.josuesch.Game;
 import com.josuesch.entities.enemies.EnemyFactory;
 import com.josuesch.entities.enemies.EnemyType;
+import com.josuesch.save.dto.WaveSaveDTO;
 import com.josuesch.world.SpawnerTile;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,20 @@ public class Wave {
         nextTickSpawnMark = waveTimer - Game.RANDOM.nextInt(3 * 60);
     }
 
+    public Wave(Game game, WaveType type, WaveSaveDTO dto) {
+        this.game = game;
+        this.type = type;
+        this.waveTimer = dto.waveTimer();
+        this.nextTickSpawnMark = dto.nextTickSpawnMark();
+        this.remainingEnemies = new ArrayList<>(dto.remainingEnemies());
+    }
+
     public void update() {
         if (isActive()) {
             waveTimer--;
             if (waveTimer <= nextTickSpawnMark) {
                 getNextSpawn().ifPresent(this::spawnEnemy);
-                nextTickSpawnMark = getNextTickSpawnMark();
+                nextTickSpawnMark = calculateNextTickSpawnMark();
             }
         }
     }
@@ -55,7 +64,7 @@ public class Wave {
         return Optional.of(spawnerTiles.get(Game.RANDOM.nextInt(spawnerTiles.size())));
     }
 
-    private int getNextTickSpawnMark() {
+    private int calculateNextTickSpawnMark() {
         if (remainingEnemies.size() <= 1) return 0;
 
         int interval = waveTimer / remainingEnemies.size();
@@ -85,5 +94,9 @@ public class Wave {
 
     public int getTotalEnemiesSize() {
         return type.getWaveSize();
+    }
+
+    public WaveSaveDTO toSaveDTO() {
+        return new WaveSaveDTO(waveTimer, nextTickSpawnMark, new ArrayList<>(remainingEnemies));
     }
 }

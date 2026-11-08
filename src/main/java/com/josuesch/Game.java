@@ -8,9 +8,13 @@ import com.josuesch.assets.animation.AnimationRegistry;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
+import com.josuesch.entities.enemies.EnemyFactory;
 import com.josuesch.graphics.Menu;
 import com.josuesch.graphics.Spritesheet;
 import com.josuesch.graphics.UI;
+import com.josuesch.save.SaveManager;
+import com.josuesch.save.dto.EnemySaveDTO;
+import com.josuesch.save.dto.GameSaveDTO;
 import com.josuesch.world.World;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -18,6 +22,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -54,6 +60,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private GameState gameState;
 
     private Levels level;
+    private boolean hasStartedPlaying = false;
 
     public Game() {
         gameState = GameState.MENU;
@@ -81,7 +88,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(
+                new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        exitGame();
+                    }
+                });
         frame.setVisible(true);
     }
 
@@ -108,13 +122,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
         level = Levels.LEVEL_1;
         world = new World(this, level.getMapPath());
         wave = new Wave(this, level.getWaveType());
+        hasStartedPlaying = true;
         gameState = GameState.RUNNING;
     }
 
     public void goToNextLevel() {
         entities.clear();
         enemies.clear();
-        player = new Player(this, 100, 180);
         entities.add(player);
         level = level.getNextLevel();
         if (level == null) {
@@ -258,10 +272,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     menu.setEnter(true);
                 }
+                break;
             default:
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     restart();
                 }
+                break;
         }
     }
 
@@ -347,6 +363,82 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     public void setGameState(GameState state) {
+        if (state == GameState.RUNNING) {
+            this.hasStartedPlaying = true;
+        }
         this.gameState = state;
+    }
+
+    public GameSaveDTO toSaveDTO() {
+        List<EnemySaveDTO> enemyDTOs = enemies.stream().map(Enemy::toSaveDTO).toList();
+        return new GameSaveDTO(level, player.toSaveDTO(), wave.toSaveDTO(), enemyDTOs);
+    }
+
+    public boolean saveGame() {
+        if (player == null
+                || player.isDead()
+                || gameState == GameState.GAME_OVER
+                || gameState == GameState.WIN) {
+            System.out.println("Só é possível salvar durante uma partida ativa!");
+            return false;
+        }
+        return SaveManager.save(this.toSaveDTO());
+    }
+
+    public void exitGame() {
+        try {
+            if (hasStartedPlaying
+                    && player != null
+                    && !player.isDead()
+                    && gameState != GameState.GAME_OVER
+                    && gameState != GameState.WIN) {
+                System.out.println("Salvando o jogo antes de fechar...");
+                saveGame();
+            }
+        } catch (Exception ex) {
+            System.err.println("Erro ao salvar no fechamento: " + ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            isRunning = false;
+            System.exit(0);
+        }
+    }
+
+    public boolean loadGame() {
+        var saveOpt = SaveManager.load();
+        if (saveOpt.isEmpty()) {
+            System.out.println("Nenhum savestate para carregar!");
+            return false;
+        }
+
+        GameSaveDTO save = saveOpt.get();
+
+        entities.clear();
+        enemies.clear();
+        entitiesToRemove.clear();
+
+        // Restaura fase e mundo
+        this.level = save.level();
+        this.world = new World(this, level.getMapPath());
+
+        // Restaura Player
+        this.player = new Player(this, save.player());
+        this.entities.add(player);
+
+        // Restaura Wave
+        this.wave = new Wave(this, level.getWaveType(), save.wave());
+
+        // Restaura Inimigos vivos
+        for (EnemySaveDTO enemyDTO : save.enemies()) {
+            Enemy enemy = EnemyFactory.create(this, enemyDTO);
+            if (enemy != null) {
+                addEnemy(enemy);
+            }
+        }
+
+        this.hasStartedPlaying = true;
+        this.gameState = GameState.RUNNING;
+        System.out.println("Savestate restaurado com sucesso!");
+        return true;
     }
 }

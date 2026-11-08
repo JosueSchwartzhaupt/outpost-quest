@@ -3,8 +3,17 @@ package com.josuesch.entities.enemies;
 import com.josuesch.Game;
 import com.josuesch.assets.animation.AnimationType;
 import com.josuesch.entities.Enemy;
+import com.josuesch.save.dto.EnemySaveDTO;
 
 public class EnemyFactory {
+    public static Enemy create(Game game, EnemySaveDTO dto) {
+        Enemy enemy = create(game, dto.type(), dto.x(), dto.y());
+        if (enemy != null) {
+            enemy.setHealth(dto.health());
+        }
+        return enemy;
+    }
+
     public static Enemy create(Game game, EnemyType type, double x, double y) {
         MovementBehavior movement;
         AttackBehavior attack;

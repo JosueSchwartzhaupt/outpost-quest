@@ -7,6 +7,7 @@ import com.josuesch.assets.animation.Animator;
 import com.josuesch.entities.enemies.AttackBehavior;
 import com.josuesch.entities.enemies.EnemyType;
 import com.josuesch.entities.enemies.MovementBehavior;
+import com.josuesch.save.dto.EnemySaveDTO;
 
 public class Enemy extends Entity implements Movable {
 
@@ -96,7 +97,15 @@ public class Enemy extends Entity implements Movable {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health = Math.max(0, Math.min(health, baseHealth));
+    }
+
     public Animator getAnimator() {
         return animator;
+    }
+
+    public EnemySaveDTO toSaveDTO() {
+        return new EnemySaveDTO(type, x, y, health);
     }
 }

@@ -4,6 +4,7 @@ import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 import com.josuesch.assets.animation.AnimationType;
+import com.josuesch.save.dto.PlayerSaveDTO;
 import java.util.Optional;
 
 public class Player extends Entity implements Movable {
@@ -28,6 +29,11 @@ public class Player extends Entity implements Movable {
         super(game, x, y, 10, 16, AnimationType.PLAYER);
         speed = NATURAL_SPEED;
         xSpriteOffset = 3;
+    }
+
+    public Player(Game game, PlayerSaveDTO dto) {
+        this(game, dto.x(), dto.y());
+        this.health = Math.max(0, Math.min(dto.health(), MAX_HEALTH));
     }
 
     public Optional<String> move() {
@@ -173,6 +179,10 @@ public class Player extends Entity implements Movable {
 
     public int getHealth() {
         return health;
+    }
+
+    public PlayerSaveDTO toSaveDTO() {
+        return new PlayerSaveDTO(x, y, health);
     }
 
     public boolean isDead() {
