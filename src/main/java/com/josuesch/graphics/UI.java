@@ -29,27 +29,43 @@ public class UI {
             else g.drawImage(EMPTY_HEART, 4 + 11 * i, 4, null);
         }
         g.setColor(new Color(119, 65, 64));
-        g.fillRect(180, 4,BAR_SIZE, 9);
+        g.fillRect(180, 4, BAR_SIZE, 9);
         g.setColor(new Color(225, 52, 38));
-        int remainingBar = (int)((double)(game.getWave().getRemainingEnemiesSize() + game.getEnemies().size()) / (double)game.getWave().getTotalEnemiesSize() * BAR_SIZE);
-        g.fillRect(180, 4,remainingBar, 9);
+        int remainingBar =
+                (int)
+                        ((double)
+                                        (game.getWave().getRemainingEnemiesSize()
+                                                + game.getEnemies().size())
+                                / (double) game.getWave().getTotalEnemiesSize()
+                                * BAR_SIZE);
+        g.fillRect(180, 4, remainingBar, 9);
 
         var state = game.getGameState();
         if (state == GameState.GAME_OVER) {
-            g.setColor(new Color(255, 0, 0, 50));
+            String text = "GAME OVER";
+            String text2 = "PRESS ENTER";
+            String text3 = "TO TRY AGAIN";
+
+            g.setColor(new Color(255, 0, 0, 70));
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
-            g.setColor(new Color(0, 0, 0));
-            g.drawString("YOU DIED", 75, 90);
-            g.drawString("PRESS ENTER", 60, 150);
-            g.drawString("TO TRY AGAIN", 62, 165);
+            g.setColor(Color.WHITE);
+
+            drawCentered(g, text, Game.HEIGHT / 2 - 15);
+            drawCentered(g, text2, Game.HEIGHT / 2);
+            drawCentered(g, text3, Game.HEIGHT / 2 + 15);
         }
         if (state == GameState.WIN) {
-            g.setColor(new Color(0, 255, 0, 50));
+            String text = "YOU WIN";
+            String text2 = "PRESS SPACE";
+            String text3 = "TO START A NEW GAME";
+
+            g.setColor(new Color(0, 255, 0, 70));
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
-            g.setColor(new Color(0, 0, 0));
-            g.drawString("YOU WIN", 75, 90);
-            g.drawString("PRESS ENTER", 60, 150);
-            g.drawString("TO START AGAIN", 62, 165);
+            g.setColor(Color.WHITE);
+
+            drawCentered(g, text, Game.HEIGHT / 2 - 15);
+            drawCentered(g, text2, Game.HEIGHT / 2);
+            drawCentered(g, text3, Game.HEIGHT / 2 + 15);
         }
     }
 

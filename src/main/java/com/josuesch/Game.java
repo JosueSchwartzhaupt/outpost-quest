@@ -117,7 +117,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         player = new Player(this, 100, 180);
         entities.add(player);
         level = level.getNextLevel();
-        if(level == null){
+        if (level == null) {
             gameState = GameState.WIN;
             return;
         }
