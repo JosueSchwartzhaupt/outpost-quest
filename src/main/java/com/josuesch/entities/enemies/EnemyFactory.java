@@ -37,15 +37,15 @@ public class EnemyFactory {
                 animationType = AnimationType.MUDLIN;
                 movement = new TeleportingMovement();
                 attack = new MeleeAttack(60, 1);
-                health = 3;
+                health = 4;
                 speed = 0.75;
                 break;
             case BAT:
                 animationType = AnimationType.BAT;
                 movement = new FlyingMovement();
                 attack = new MeleeAttack(60, 1);
-                health = 1;
-                speed = 1.25;
+                health = 2;
+                speed = 1.35;
                 ySpriteOffset = 4;
                 height = 9;
                 break;

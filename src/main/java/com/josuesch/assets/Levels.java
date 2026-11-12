@@ -2,7 +2,8 @@ package com.josuesch.assets;
 
 public enum Levels {
     LEVEL_1(WaveType.FIRST, "/map.png"),
-    LEVEL_2(WaveType.SECOND, "/map2.png");
+    LEVEL_2(WaveType.SECOND, "/map2.png"),
+    LEVEL_3(WaveType.THIRD, "/map3.png");
 
     private WaveType waveType;
     private String mapPath;

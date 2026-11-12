@@ -10,16 +10,22 @@ import java.util.Map;
 
 public enum WaveType {
     FIRST(
-            80 * 60,
+            40 * 60,
             Map.of(
                     FIREMAN, 15,
                     MUDLIN, 5)),
     SECOND(
-            120 * 60,
+            70 * 60,
             Map.of(
                     FIREMAN, 25,
                     MUDLIN, 10,
-                    BAT, 10));
+                    BAT, 10)),
+    THIRD(
+            70 * 60,
+            Map.of(
+                    FIREMAN, 20,
+            MUDLIN, 25,
+            BAT, 15));
 
     private final int waveTime;
     private final Map<EnemyType, Integer> enemyConfig;
