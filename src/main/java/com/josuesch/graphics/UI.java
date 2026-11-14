@@ -17,6 +17,11 @@ public class UI {
     public static final BufferedImage POWER_UP_SHELL =
             Game.SPRITESHEET.getSprite(16 * 6, 16 * 5, 16, 16);
 
+    public static final Color BAR_BG_COLOR = new Color(119, 65, 64);
+    public static final Color BAR_FG_COLOR = new Color(225, 52, 38);
+    public static final Color GAME_OVER_OVERLAY = new Color(255, 0, 0, 70);
+    public static final Color WIN_OVERLAY = new Color(0, 255, 0, 70);
+
     public static final int BAR_SIZE = 100;
 
     private final Game game;
@@ -39,9 +44,9 @@ public class UI {
             GameGraphics.drawImage(g, Animator.getIdleIcon(powerUp.getAnimationType()), 1, 0);
         }
 
-        g.setColor(new Color(119, 65, 64));
+        g.setColor(BAR_BG_COLOR);
         g.fillRect(180, 4, BAR_SIZE, 9);
-        g.setColor(new Color(225, 52, 38));
+        g.setColor(BAR_FG_COLOR);
         int remainingBar =
                 (int)
                         ((double)
@@ -57,7 +62,7 @@ public class UI {
             String text2 = "PRESS ENTER";
             String text3 = "TO TRY AGAIN";
 
-            g.setColor(new Color(255, 0, 0, 70));
+            g.setColor(GAME_OVER_OVERLAY);
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
             g.setColor(Color.WHITE);
 
@@ -67,10 +72,10 @@ public class UI {
         }
         if (state == GameState.WIN) {
             String text = "YOU WIN";
-            String text2 = "PRESS SPACE";
+            String text2 = "PRESS ENTER";
             String text3 = "TO START A NEW GAME";
 
-            g.setColor(new Color(0, 255, 0, 70));
+            g.setColor(WIN_OVERLAY);
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
             g.setColor(Color.WHITE);
 

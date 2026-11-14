@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class GameGraphics {
 
+    private static final Color RED_MASK_COLOR = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+
     public static void fillRect(Graphics g, double x, double y, int width, int height) {
         g.fillRect((int) Math.round(x), (int) Math.round(y), width, height);
     }
@@ -47,7 +49,7 @@ public class GameGraphics {
         g2d.setComposite(AlphaComposite.SrcAtop);
 
         // Altere o último número (0.5f) para ajustar a intensidade do vermelho (0.0f a 1.0f)
-        g2d.setColor(new Color(1.0f, 0.0f, 0.0f, 0.5f));
+        g2d.setColor(RED_MASK_COLOR);
         g2d.fillRect(0, 0, newSprite.getWidth(), newSprite.getHeight());
 
         g2d.dispose();

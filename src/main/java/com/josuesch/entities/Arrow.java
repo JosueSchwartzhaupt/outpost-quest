@@ -72,7 +72,7 @@ public class Arrow extends Entity implements Movable {
                     g, sprite, x - xSpriteOffset, y - ySpriteOffset, ang + spriteCorrection);
             return;
         }
-        g.setColor(new Color(255, 0, 0));
+        g.setColor(Color.RED);
         GameGraphics.fillRect(g, x, y, width, height);
     }
 

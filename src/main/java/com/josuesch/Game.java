@@ -163,6 +163,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
             if (System.currentTimeMillis() - timer >= 1000) {
                 timer += 1000;
             }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         stop();
     }
@@ -203,7 +208,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         Graphics g = image.getGraphics();
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         world.render(g);

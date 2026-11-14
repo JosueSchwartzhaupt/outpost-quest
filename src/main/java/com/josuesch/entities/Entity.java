@@ -47,7 +47,7 @@ public abstract class Entity implements Placeble {
                     g, sprite, this.getX() - xSpriteOffset, this.getY() - ySpriteOffset);
             return;
         }
-        g.setColor(new Color(255, 0, 0));
+        g.setColor(Color.RED);
         GameGraphics.fillRect(g, x, y, width, height);
     }
 

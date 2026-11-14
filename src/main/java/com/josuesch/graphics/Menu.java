@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 
 public class Menu {
 
+    private static final Color MENU_OVERLAY_COLOR = new Color(0, 0, 0, 125);
+    private static final Font MENU_FONT = new Font("arial", Font.BOLD, 24);
+
     private String[] options = {"novo jogo", "carregar jogo", "sair"};
 
     private int currentOption = 0;
@@ -60,7 +63,7 @@ public class Menu {
     }
 
     public void render(Graphics g) {
-        g.setColor(new Color(0, 0, 0, 125));
+        g.setColor(MENU_OVERLAY_COLOR);
         g.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
 
         g.drawImage(
@@ -71,7 +74,7 @@ public class Menu {
 
         // Opçoes do menu
         g.setColor(Color.WHITE);
-        g.setFont(new Font("arial", Font.BOLD, 24));
+        g.setFont(MENU_FONT);
         g.drawString(
                 "Novo Jogo",
                 Game.WIDTH * Game.SCALE / 2 - 70,
