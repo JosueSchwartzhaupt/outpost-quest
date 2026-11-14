@@ -3,17 +3,22 @@ package com.josuesch.entities.powerups;
 import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.entities.Entity;
+import com.josuesch.save.dto.PowerUpSaveDTO;
 
 public class PowerUp extends Entity {
 
     private static final int TOTAL_LIFE_TIME = 10 * 60;
 
-    private PowerUpType type;
+    private final PowerUpType type;
     private int lifeTime;
 
     public PowerUp(Game game, double x, double y, PowerUpType type) {
         super(game, x, y, 14, 14, type.getAnimationType());
         this.type = type;
+    }
+
+    public PowerUp(Game game, PowerUpSaveDTO dto) {
+        this(game, dto.x(), dto.y(), dto.type());
     }
 
     @Override
@@ -39,5 +44,9 @@ public class PowerUp extends Entity {
         if (lifeTime >= TOTAL_LIFE_TIME) dispawn();
 
         lifeTime++;
+    }
+
+    public PowerUpSaveDTO toSaveDTO() {
+        return new PowerUpSaveDTO(type, x, y, lifeTime);
     }
 }

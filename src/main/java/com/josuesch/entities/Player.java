@@ -6,7 +6,9 @@ import com.josuesch.assets.Movable;
 import com.josuesch.assets.animation.AnimationType;
 import com.josuesch.entities.powerups.Effect;
 import com.josuesch.entities.powerups.PowerUpType;
+import com.josuesch.entities.powerups.TimedEffect;
 import com.josuesch.save.dto.PlayerSaveDTO;
+import com.josuesch.save.dto.TimedEffectSaveDTO;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,8 +17,6 @@ import java.util.Optional;
 public class Player extends Entity implements Movable {
     public static final double NATURAL_SPEED = 2;
     public static final int MAX_HEALTH = 3;
-    public static final int MAX_SIZE = Game.WIDTH - 64;
-    public static final int MAX_SPEED = 10;
     public static final int MAX_SHOOTING_DRAWBACK = 20;
     public static final int MIN_SHOOTING_DRAWBACK = 1;
 
@@ -45,7 +45,12 @@ public class Player extends Entity implements Movable {
 
     public Player(Game game, PlayerSaveDTO dto) {
         this(game, dto.x(), dto.y());
+        this.savedPowerUp = dto.savedPowerUp();
         this.health = Math.max(0, Math.min(dto.health(), MAX_HEALTH));
+
+        for (TimedEffectSaveDTO timedEffectSaveDTO : dto.effectsSaveDTO()) {
+            this.activeEffects.add(TimedEffect.createEffect(timedEffectSaveDTO));
+        }
     }
 
     public Optional<String> move() {
@@ -204,27 +209,18 @@ public class Player extends Entity implements Movable {
     }
 
     public PlayerSaveDTO toSaveDTO() {
-        return new PlayerSaveDTO(x, y, health);
+        var effectsDTOs =
+                activeEffects.stream()
+                        .filter(TimedEffect.class::isInstance)
+                        .map(TimedEffect.class::cast)
+                        .map(TimedEffect::toSaveDTO)
+                        .toList();
+
+        return new PlayerSaveDTO(x, y, health, savedPowerUp, effectsDTOs);
     }
 
     public boolean isDead() {
         return health == 0;
-    }
-
-    public void expandPaddle(int size) {
-        int increase = Math.min(MAX_SIZE - width, size);
-        double gameCenter = Game.WIDTH / 2.0;
-        double paddleCenter = x + width / 2.0;
-
-        if (paddleCenter < gameCenter) {
-            width += increase;
-        } else if (paddleCenter > gameCenter) {
-            x -= increase;
-            width += increase;
-        } else {
-            x -= increase / 2.0;
-            width += increase;
-        }
     }
 
     public int decreaseShootingSpeed(int ticks) {

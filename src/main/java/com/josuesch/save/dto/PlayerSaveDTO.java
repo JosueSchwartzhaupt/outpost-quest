@@ -1,3 +1,11 @@
 package com.josuesch.save.dto;
 
-public record PlayerSaveDTO(double x, double y, int health) {}
+import com.josuesch.entities.powerups.PowerUpType;
+import java.util.List;
+
+public record PlayerSaveDTO(
+        double x,
+        double y,
+        int health,
+        PowerUpType savedPowerUp,
+        List<TimedEffectSaveDTO> effectsSaveDTO) {}

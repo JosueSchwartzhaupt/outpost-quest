@@ -9,12 +9,14 @@ import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
 import com.josuesch.entities.enemies.EnemyFactory;
+import com.josuesch.entities.powerups.PowerUp;
 import com.josuesch.graphics.Menu;
 import com.josuesch.graphics.Spritesheet;
 import com.josuesch.graphics.UI;
 import com.josuesch.save.SaveManager;
 import com.josuesch.save.dto.EnemySaveDTO;
 import com.josuesch.save.dto.GameSaveDTO;
+import com.josuesch.save.dto.PowerUpSaveDTO;
 import com.josuesch.world.World;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -374,7 +376,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public GameSaveDTO toSaveDTO() {
         List<EnemySaveDTO> enemyDTOs = enemies.stream().map(Enemy::toSaveDTO).toList();
-        return new GameSaveDTO(level, player.toSaveDTO(), wave.toSaveDTO(), enemyDTOs);
+        List<PowerUpSaveDTO> powerUpDTOs =
+                entities.stream()
+                        .filter(PowerUp.class::isInstance)
+                        .map(PowerUp.class::cast)
+                        .map(PowerUp::toSaveDTO)
+                        .toList();
+        return new GameSaveDTO(level, player.toSaveDTO(), wave.toSaveDTO(), enemyDTOs, powerUpDTOs);
     }
 
     public boolean saveGame() {
@@ -437,6 +445,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             if (enemy != null) {
                 addEnemy(enemy);
             }
+        }
+
+        for (PowerUpSaveDTO powerUpDTO : save.powerUps()) {
+            this.entities.add(new PowerUp(this, powerUpDTO));
         }
 
         this.hasStartedPlaying = true;

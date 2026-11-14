@@ -1,6 +1,7 @@
 package com.josuesch.entities.powerups.effects;
 
 import com.josuesch.entities.Player;
+import com.josuesch.entities.powerups.PowerUpType;
 import com.josuesch.entities.powerups.TimedEffect;
 
 public class RapidShotEffect extends TimedEffect {
@@ -16,6 +17,11 @@ public class RapidShotEffect extends TimedEffect {
     @Override
     public void onApply(Player player) {
         appliedBoost = player.decreaseShootingSpeed(BOOST);
+    }
+
+    @Override
+    public PowerUpType type() {
+        return PowerUpType.RAPID_FIRE;
     }
 
     @Override
