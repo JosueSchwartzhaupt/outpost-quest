@@ -379,6 +379,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
         this.gameState = state;
     }
 
+    public boolean hasStartedPlaying() {
+        return hasStartedPlaying;
+    }
+
     public GameSaveDTO toSaveDTO() {
         List<EnemySaveDTO> enemyDTOs = enemies.stream().map(Enemy::toSaveDTO).toList();
         List<PowerUpSaveDTO> powerUpDTOs =
