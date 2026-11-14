@@ -65,20 +65,25 @@ public class AnimationRegistry {
         bat.addAnimation("DEAD", spritesheet.getSprites(2, 6, 16, 5));
         putInCache(AnimationType.BAT, bat);
 
-        // --- BOMB ---
-        AnimationData bomb = new AnimationData();
-        bomb.addAnimation("IDLE", spritesheet.getSprites(5, 5, 16, 1));
-        putInCache(AnimationType.BOMB, bomb);
-
         // --- HEALTH_POTION ---
         AnimationData healthPotion = new AnimationData();
         healthPotion.addAnimation("IDLE", spritesheet.getSprites(0, 5, 16, 1));
         putInCache(AnimationType.HEALTH_POTION, healthPotion);
 
+        // --- MULTI_SHOT ---
+        AnimationData multiShot = new AnimationData();
+        multiShot.addAnimation("IDLE", spritesheet.getSprites(1, 5, 16, 1));
+        putInCache(AnimationType.MULTI_SHOT, multiShot);
+
         // --- QUIVER ---
         AnimationData quiver = new AnimationData();
         quiver.addAnimation("IDLE", spritesheet.getSprites(2, 5, 16, 1));
         putInCache(AnimationType.QUIVER, quiver);
+
+        // --- BOMB ---
+        AnimationData bomb = new AnimationData();
+        bomb.addAnimation("IDLE", spritesheet.getSprites(5, 5, 16, 1));
+        putInCache(AnimationType.BOMB, bomb);
     }
 
     public static AnimationData get(AnimationType type) {

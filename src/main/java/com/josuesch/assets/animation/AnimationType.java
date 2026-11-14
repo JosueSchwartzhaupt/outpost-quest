@@ -9,4 +9,5 @@ public enum AnimationType {
     BOMB,
     HEALTH_POTION,
     QUIVER,
+    MULTI_SHOT
 }

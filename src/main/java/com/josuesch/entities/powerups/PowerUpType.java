@@ -4,12 +4,14 @@ import com.josuesch.Game;
 import com.josuesch.assets.animation.AnimationType;
 import com.josuesch.entities.powerups.effects.BombEffect;
 import com.josuesch.entities.powerups.effects.HealEffect;
+import com.josuesch.entities.powerups.effects.MultiShotEffect;
 import com.josuesch.entities.powerups.effects.RapidShotEffect;
 import java.util.function.Supplier;
 
 public enum PowerUpType {
     HEAL(AnimationType.HEALTH_POTION, HealEffect::new),
     RAPID_FIRE(AnimationType.QUIVER, () -> new RapidShotEffect(10)),
+    MULTI_SHOT(AnimationType.MULTI_SHOT, () -> new MultiShotEffect(10)),
     BOMB(AnimationType.BOMB, BombEffect::new);
     private final AnimationType animationType;
     private final Supplier<Effect> effectSupplier;

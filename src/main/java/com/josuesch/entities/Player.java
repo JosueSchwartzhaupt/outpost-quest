@@ -19,6 +19,8 @@ public class Player extends Entity implements Movable {
     public static final int MAX_HEALTH = 3;
     public static final int MAX_SHOOTING_DRAWBACK = 20;
     public static final int MIN_SHOOTING_DRAWBACK = 1;
+    public static final int MAX_ARROW_QTD = 16;
+    public static final int MIN_ARROW_QTD = 1;
 
     private boolean right, up, left, down;
     private boolean shootRight, shootUp, shootLeft, shootDown;
@@ -32,6 +34,8 @@ public class Player extends Entity implements Movable {
 
     private int shootingDrawback = MAX_SHOOTING_DRAWBACK;
     private int shootingIdx = shootingDrawback;
+
+    private int arrowQtd = 1;
 
     private PowerUpType savedPowerUp;
 
@@ -49,7 +53,9 @@ public class Player extends Entity implements Movable {
         this.health = Math.max(0, Math.min(dto.health(), MAX_HEALTH));
 
         for (TimedEffectSaveDTO timedEffectSaveDTO : dto.effectsSaveDTO()) {
-            this.activeEffects.add(TimedEffect.createEffect(timedEffectSaveDTO));
+            var effect = TimedEffect.createEffect(timedEffectSaveDTO);
+            this.activeEffects.add(effect);
+            effect.onApply(this);
         }
     }
 
@@ -102,13 +108,17 @@ public class Player extends Entity implements Movable {
 
         if (shootingIdx >= shootingDrawback) {
             shootingIdx = 0;
-            game.getEntities()
-                    .add(
-                            new Arrow(
-                                    game,
-                                    x + width / 2,
-                                    y + height / 2,
-                                    Math.toDegrees(Math.atan2(arrowDy, arrowDx))));
+            var shootingAngle = Math.toDegrees(Math.atan2(arrowDy, arrowDx));
+
+            for (int i = 0; i < arrowQtd; i++) {
+                game.getEntities()
+                        .add(
+                                new Arrow(
+                                        game,
+                                        x + width / 2.0,
+                                        y + height / 2.0,
+                                        shootingAngle + (22.5 * (i - (arrowQtd - 1) / 2))));
+            }
         }
 
         String direction = null;
@@ -271,5 +281,17 @@ public class Player extends Entity implements Movable {
         }
 
         tickEffects();
+    }
+
+    public int decreaseArrowQtd(int amount) {
+        int arrowQtdAnt = arrowQtd;
+        arrowQtd = Math.max(arrowQtd - amount, MIN_ARROW_QTD);
+        return arrowQtdAnt - arrowQtd;
+    }
+
+    public int increaseArrowQtd(int amount) {
+        int arrowQtdAnt = arrowQtd;
+        arrowQtd = Math.min(arrowQtd + amount, MAX_ARROW_QTD);
+        return arrowQtd - arrowQtdAnt;
     }
 }
