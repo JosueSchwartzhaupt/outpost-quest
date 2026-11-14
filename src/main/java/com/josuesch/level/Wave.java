@@ -1,4 +1,4 @@
-package com.josuesch.assets;
+package com.josuesch.level;
 
 import com.josuesch.Game;
 import com.josuesch.entities.enemies.EnemyFactory;

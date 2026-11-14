@@ -1,7 +1,7 @@
 package com.josuesch.entities.enemies;
 
 import com.josuesch.Game;
-import com.josuesch.assets.HitboxComparator;
+import com.josuesch.core.HitboxComparator;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Player;
 import java.util.Optional;

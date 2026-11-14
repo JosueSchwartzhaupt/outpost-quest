@@ -1,9 +1,9 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
-import com.josuesch.assets.Movable;
-import com.josuesch.assets.animation.AnimationType;
-import com.josuesch.assets.animation.Animator;
+import com.josuesch.core.Movable;
+import com.josuesch.graphics.animation.AnimationType;
+import com.josuesch.graphics.animation.Animator;
 import com.josuesch.entities.enemies.AttackBehavior;
 import com.josuesch.entities.enemies.EnemyType;
 import com.josuesch.entities.enemies.MovementBehavior;

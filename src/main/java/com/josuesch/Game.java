@@ -1,10 +1,10 @@
 package com.josuesch;
 
-import com.josuesch.assets.GameState;
-import com.josuesch.assets.Levels;
-import com.josuesch.assets.Placeble;
-import com.josuesch.assets.Wave;
-import com.josuesch.assets.animation.AnimationRegistry;
+import com.josuesch.core.GameState;
+import com.josuesch.level.Levels;
+import com.josuesch.core.Placeble;
+import com.josuesch.level.Wave;
+import com.josuesch.graphics.animation.AnimationRegistry;
 import com.josuesch.entities.Enemy;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;

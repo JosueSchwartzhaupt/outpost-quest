@@ -1,7 +1,7 @@
 package com.josuesch.entities.powerups;
 
 import com.josuesch.Game;
-import com.josuesch.assets.HitboxComparator;
+import com.josuesch.core.HitboxComparator;
 import com.josuesch.entities.Entity;
 import com.josuesch.save.dto.PowerUpSaveDTO;
 

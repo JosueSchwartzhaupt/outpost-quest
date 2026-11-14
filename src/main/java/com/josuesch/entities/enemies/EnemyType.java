@@ -1,7 +1,7 @@
 package com.josuesch.entities.enemies;
 
 import com.josuesch.Game;
-import com.josuesch.assets.animation.AnimationType;
+import com.josuesch.graphics.animation.AnimationType;
 import com.josuesch.entities.Enemy;
 import java.util.function.Supplier;
 

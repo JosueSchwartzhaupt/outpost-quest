@@ -1,4 +1,4 @@
-package com.josuesch.assets;
+package com.josuesch.core;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.josuesch.assets;
+package com.josuesch.level;
 
 import static com.josuesch.entities.enemies.EnemyType.BAT;
 import static com.josuesch.entities.enemies.EnemyType.FIREMAN;

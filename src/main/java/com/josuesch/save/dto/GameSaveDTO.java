@@ -1,6 +1,6 @@
 package com.josuesch.save.dto;
 
-import com.josuesch.assets.Levels;
+import com.josuesch.level.Levels;
 import java.util.List;
 
 public record GameSaveDTO(

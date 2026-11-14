@@ -1,7 +1,7 @@
 package com.josuesch.world;
 
 import com.josuesch.Game;
-import com.josuesch.assets.Placeble;
+import com.josuesch.core.Placeble;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

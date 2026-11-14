@@ -1,4 +1,4 @@
-package com.josuesch.assets.animation;
+package com.josuesch.graphics.animation;
 
 import com.josuesch.graphics.Spritesheet;
 import java.util.EnumMap;

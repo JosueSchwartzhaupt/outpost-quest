@@ -1,9 +1,9 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
-import com.josuesch.assets.HitboxComparator;
-import com.josuesch.assets.Movable;
-import com.josuesch.assets.animation.AnimationType;
+import com.josuesch.core.HitboxComparator;
+import com.josuesch.core.Movable;
+import com.josuesch.graphics.animation.AnimationType;
 import com.josuesch.graphics.GameGraphics;
 import com.josuesch.world.SpawnerTile;
 import java.awt.Color;

@@ -1,4 +1,4 @@
-package com.josuesch.assets;
+package com.josuesch.core;
 
 public enum GameState {
     MENU,

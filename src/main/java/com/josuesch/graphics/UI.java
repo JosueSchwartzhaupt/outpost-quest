@@ -1,8 +1,8 @@
 package com.josuesch.graphics;
 
 import com.josuesch.Game;
-import com.josuesch.assets.GameState;
-import com.josuesch.assets.animation.Animator;
+import com.josuesch.core.GameState;
+import com.josuesch.graphics.animation.Animator;
 import com.josuesch.entities.Player;
 import java.awt.Color;
 import java.awt.Graphics;

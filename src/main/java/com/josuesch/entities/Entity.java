@@ -1,9 +1,9 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
-import com.josuesch.assets.Placeble;
-import com.josuesch.assets.animation.AnimationType;
-import com.josuesch.assets.animation.Animator;
+import com.josuesch.core.Placeble;
+import com.josuesch.graphics.animation.AnimationType;
+import com.josuesch.graphics.animation.Animator;
 import com.josuesch.graphics.GameGraphics;
 import java.awt.Color;
 import java.awt.Graphics;

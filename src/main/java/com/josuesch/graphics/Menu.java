@@ -1,7 +1,7 @@
 package com.josuesch.graphics;
 
 import com.josuesch.Game;
-import com.josuesch.assets.GameState;
+import com.josuesch.core.GameState;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;

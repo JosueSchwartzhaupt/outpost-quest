@@ -1,4 +1,4 @@
-package com.josuesch.assets.animation;
+package com.josuesch.graphics.animation;
 
 public enum AnimationType {
     FIREMAN,

@@ -1,6 +1,6 @@
 package com.josuesch.entities.enemies;
 
-import com.josuesch.assets.HitboxComparator;
+import com.josuesch.core.HitboxComparator;
 import com.josuesch.entities.Enemy;
 import java.util.Optional;
 

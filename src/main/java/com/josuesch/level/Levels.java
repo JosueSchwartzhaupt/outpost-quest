@@ -1,4 +1,4 @@
-package com.josuesch.assets;
+package com.josuesch.level;
 
 public enum Levels {
     LEVEL_1(WaveType.FIRST, "/map.png"),
