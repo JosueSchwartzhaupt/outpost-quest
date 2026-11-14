@@ -12,6 +12,7 @@ public class Animator {
     private int currentFrame = 0;
     private int timer = 0;
     private int speed = 10; // Quantos ticks do jogo até mudar de frame
+    private double transparency = 0;
 
     private boolean temporaryRedMask;
     private int redMaskFrames = 0, maxRedMaskFrames = 10;
@@ -35,6 +36,14 @@ public class Animator {
 
     public void applyTemporaryRedMask() {
         temporaryRedMask = true;
+    }
+
+    public void setTransparency(double transparency) {
+        this.transparency = transparency;
+    }
+
+    public double getTransparency() {
+        return transparency;
     }
 
     public void update() {
@@ -64,10 +73,15 @@ public class Animator {
         if (frames == null || frames.isEmpty()) return null;
         var sprite = frames.get(currentFrame);
         if (temporaryRedMask) sprite = GameGraphics.applyRedMask(sprite);
+        if (transparency != 0) sprite = GameGraphics.applyTransparency(sprite, transparency);
         return sprite;
     }
 
     public boolean hasCompletedAnimation() {
         return completedAnimation;
+    }
+
+    public static BufferedImage getIdleIcon(AnimationType animationType) {
+        return AnimationRegistry.get(animationType).getFrames("IDLE").getFirst();
     }
 }

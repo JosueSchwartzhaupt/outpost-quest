@@ -20,12 +20,7 @@ public enum WaveType {
                     FIREMAN, 25,
                     MUDLIN, 10,
                     BAT, 10)),
-    THIRD(
-            70 * 60,
-            Map.of(
-                    FIREMAN, 20,
-            MUDLIN, 25,
-            BAT, 15));
+    THIRD(70 * 60, Map.of(FIREMAN, 20, MUDLIN, 25, BAT, 15));
 
     private final int waveTime;
     private final Map<EnemyType, Integer> enemyConfig;

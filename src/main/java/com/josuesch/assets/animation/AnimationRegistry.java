@@ -64,6 +64,21 @@ public class AnimationRegistry {
         bat.addAnimation("LEFT", spritesheet.getSprites(0, 6, 16, 2));
         bat.addAnimation("DEAD", spritesheet.getSprites(2, 6, 16, 5));
         putInCache(AnimationType.BAT, bat);
+
+        // --- BOMB ---
+        AnimationData bomb = new AnimationData();
+        bomb.addAnimation("IDLE", spritesheet.getSprites(5, 5, 16, 1));
+        putInCache(AnimationType.BOMB, bomb);
+
+        // --- HEALTH_POTION ---
+        AnimationData healthPotion = new AnimationData();
+        healthPotion.addAnimation("IDLE", spritesheet.getSprites(0, 5, 16, 1));
+        putInCache(AnimationType.HEALTH_POTION, healthPotion);
+
+        // --- QUIVER ---
+        AnimationData quiver = new AnimationData();
+        quiver.addAnimation("IDLE", spritesheet.getSprites(2, 5, 16, 1));
+        putInCache(AnimationType.QUIVER, quiver);
     }
 
     public static AnimationData get(AnimationType type) {

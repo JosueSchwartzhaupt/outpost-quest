@@ -53,4 +53,24 @@ public class GameGraphics {
         g2d.dispose();
         return newSprite;
     }
+
+    public static BufferedImage applyTransparency(
+            BufferedImage originalSprite, double transparencyPercentage) {
+        double clampedTransparency = Math.max(0.0, Math.min(100.0, transparencyPercentage)) / 100.0;
+
+        float opacity = (float) (1.0 - clampedTransparency);
+
+        BufferedImage transparentImage =
+                new BufferedImage(
+                        originalSprite.getWidth(),
+                        originalSprite.getHeight(),
+                        BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = transparentImage.createGraphics();
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        g2d.drawImage(originalSprite, 0, 0, null);
+        g2d.dispose();
+
+        return transparentImage;
+    }
 }

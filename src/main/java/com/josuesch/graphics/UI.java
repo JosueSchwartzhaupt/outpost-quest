@@ -2,6 +2,7 @@ package com.josuesch.graphics;
 
 import com.josuesch.Game;
 import com.josuesch.assets.GameState;
+import com.josuesch.assets.animation.Animator;
 import com.josuesch.entities.Player;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,6 +14,8 @@ public class UI {
             Game.SPRITESHEET.getSprite(16 * 0, 16 * 9, 16, 16);
     public static final BufferedImage EMPTY_HEART =
             Game.SPRITESHEET.getSprite(16 * 1, 16 * 9, 16, 16);
+    public static final BufferedImage POWER_UP_SHELL =
+            Game.SPRITESHEET.getSprite(16 * 6, 16 * 5, 16, 16);
 
     public static final int BAR_SIZE = 100;
 
@@ -25,9 +28,17 @@ public class UI {
     public void render(Graphics g) {
         var health = game.getPlayer().getHealth();
         for (int i = 0; i < Player.MAX_HEALTH; i++) {
-            if (i < health) g.drawImage(FULL_HEART, 4 + 11 * i, 4, null);
-            else g.drawImage(EMPTY_HEART, 4 + 11 * i, 4, null);
+            if (i < health) g.drawImage(FULL_HEART, 16 + 11 * i, 4, null);
+            else g.drawImage(EMPTY_HEART, 16 + 11 * i, 4, null);
         }
+
+        GameGraphics.drawImage(g, POWER_UP_SHELL, 1, 0);
+
+        var powerUp = game.getPlayer().getSavedPowerUp();
+        if (powerUp != null) {
+            GameGraphics.drawImage(g, Animator.getIdleIcon(powerUp.getAnimationType()), 1, 0);
+        }
+
         g.setColor(new Color(119, 65, 64));
         g.fillRect(180, 4, BAR_SIZE, 9);
         g.setColor(new Color(225, 52, 38));

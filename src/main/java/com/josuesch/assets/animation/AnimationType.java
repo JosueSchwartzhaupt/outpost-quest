@@ -5,5 +5,8 @@ public enum AnimationType {
     MUDLIN,
     PLAYER,
     ARROW,
-    BAT
+    BAT,
+    BOMB,
+    HEALTH_POTION,
+    QUIVER,
 }

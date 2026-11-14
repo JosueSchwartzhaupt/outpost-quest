@@ -7,6 +7,8 @@ import com.josuesch.assets.animation.Animator;
 import com.josuesch.entities.enemies.AttackBehavior;
 import com.josuesch.entities.enemies.EnemyType;
 import com.josuesch.entities.enemies.MovementBehavior;
+import com.josuesch.entities.powerups.PowerUp;
+import com.josuesch.entities.powerups.PowerUpType;
 import com.josuesch.save.dto.EnemySaveDTO;
 
 public class Enemy extends Entity implements Movable {
@@ -72,6 +74,8 @@ public class Enemy extends Entity implements Movable {
         } else {
             animator.setAnimation("DEAD");
             if (animator.hasCompletedAnimation()) {
+                if (Game.RANDOM.nextInt(4) == 0)
+                    game.getEntities().add(new PowerUp(game, x, y, PowerUpType.getRandomPowerUp()));
                 this.dispawn();
                 return;
             }

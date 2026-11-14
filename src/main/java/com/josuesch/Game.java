@@ -254,6 +254,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     player.setShootDown(true);
                 }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    player.setUsePowerUp(true);
+                }
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     player.setRight(false);
                     player.setLeft(false);
